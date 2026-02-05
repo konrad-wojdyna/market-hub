@@ -1,8 +1,21 @@
+import { BrowserRouter, Routes, Route } from "react-router";
+import { ListingPage } from "./pages";
+
 const App = () => {
   return (
-    <div>
-      <h1 className="text-4xl font-bold">App</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          index
+          element={
+            <div>
+              <h1>HomePage</h1>
+            </div>
+          }
+        />
+        <Route path="/listings" element={<ListingPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 export default App;
