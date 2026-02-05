@@ -23,3 +23,14 @@ export interface UpdateListingData {
   category: string;
   location?: string;
 }
+
+export const CATEGORIES = [
+  "Electronics",
+  "Furniture",
+  "Automotive",
+  "Books",
+  "Fashion",
+  "Sports",
+] as const;
+
+export type Category = (typeof CATEGORIES)[number];
