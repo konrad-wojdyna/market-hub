@@ -9,6 +9,7 @@ import com.markethub.api.mapper.ListingMapper;
 import com.markethub.api.repository.ListingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ListingService {
 
     private final ListingRepository listingRepository;
 
+    @Transactional
     public ListingResponse createListing(CreateListingRequest request){
 
         Listing listing = ListingMapper.toEntity(request);
@@ -26,6 +28,7 @@ public class ListingService {
         return ListingMapper.toResponse(newListing);
     }
 
+    @Transactional(readOnly = true)
     public List<ListingResponse> getAllListing(){
         return listingRepository.findAll()
                 .stream()
@@ -33,12 +36,14 @@ public class ListingService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ListingResponse getListingById(Long id){
 
         Listing listing = findListingById(id);
         return ListingMapper.toResponse(listing);
     }
 
+    @Transactional
     public ListingResponse updateListing(Long id, UpdateListingRequest request){
 
         Listing listing = findListingById(id);
@@ -49,7 +54,12 @@ public class ListingService {
         return ListingMapper.toResponse(savedListing);
     }
 
+    @Transactional
     public void deleteListing(Long id){
+        if(!listingRepository.existsById(id)){
+            throw new ListingNotFound(id);
+        }
+
         listingRepository.deleteById(id);
     }
 
