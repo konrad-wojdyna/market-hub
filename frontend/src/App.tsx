@@ -1,3 +1,5 @@
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { ListingPage, CreateListingPage } from "./pages";
 
@@ -16,6 +18,7 @@ const App = () => {
         <Route path="/listings" element={<ListingPage />} />
         <Route path="/listings/new" element={<CreateListingPage />} />
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 };
