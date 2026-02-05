@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { ListingPage } from "./pages";
+import { ListingPage, CreateListingPage } from "./pages";
 
 const App = () => {
   return (
@@ -14,6 +14,7 @@ const App = () => {
           }
         />
         <Route path="/listings" element={<ListingPage />} />
+        <Route path="/listings/new" element={<CreateListingPage />} />
       </Routes>
     </BrowserRouter>
   );
