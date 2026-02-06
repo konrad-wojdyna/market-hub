@@ -1,7 +1,12 @@
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { ListingPage, CreateListingPage } from "./pages";
+import {
+  ListingPage,
+  CreateListingPage,
+  DetailListingPage,
+  EditListingPage,
+} from "./pages";
 
 const App = () => {
   return (
@@ -17,6 +22,8 @@ const App = () => {
         />
         <Route path="/listings" element={<ListingPage />} />
         <Route path="/listings/new" element={<CreateListingPage />} />
+        <Route path="/listings/:id" element={<DetailListingPage />} />
+        <Route path="/listings/:id/edit" element={<EditListingPage />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>

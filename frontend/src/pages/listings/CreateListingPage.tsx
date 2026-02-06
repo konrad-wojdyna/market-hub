@@ -1,5 +1,5 @@
-import { Navbar } from "../components";
-import { CreateListingForm } from "../components";
+import { Navbar } from "../../components";
+import { CreateListingForm } from "../../components";
 
 const CreateListingPage = () => {
   return (

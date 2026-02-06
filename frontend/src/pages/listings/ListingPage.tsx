@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ListingList, ErrorComponent } from "../components";
-import listingService from "../services/listingService";
-import type { Listing } from "../types/listing";
+import { ListingList, ErrorComponent } from "../../components";
+import listingService from "../../services/listingService";
+import type { Listing } from "../../types/listing";
 
 const ListingPage = () => {
   const [listings, setListings] = useState<Listing[]>([]);
