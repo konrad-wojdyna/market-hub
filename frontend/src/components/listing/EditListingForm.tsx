@@ -37,9 +37,9 @@ const EditListingForm = () => {
 
   const onSubmit: SubmitHandler<UpdateListingData> = async (data) => {
     try {
-      const response = await listingService.updateListing(Number(id), data);
-      console.log(response);
+      await listingService.updateListing(Number(id), data);
       toast.success("Listing updated!");
+      navigate(`/listings/${id}`);
     } catch (error) {
       const errorMsg =
         error instanceof Error
