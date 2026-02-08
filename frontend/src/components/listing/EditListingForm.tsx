@@ -44,7 +44,7 @@ const EditListingForm = () => {
       const errorMsg =
         error instanceof Error
           ? error.message
-          : "Something went wrong. Pleasy try again!";
+          : "Something went wrong. Please try again!";
       toast.error(errorMsg);
     }
   };
