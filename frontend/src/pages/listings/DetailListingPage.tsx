@@ -22,7 +22,9 @@ const DetailListingPage = () => {
       toast.success("Deleted successfully");
       navigate("/listings");
     } catch (error) {
-      console.log(error);
+      const errorMsg =
+        error instanceof Error ? error.message : "Failed to delete";
+      toast.error(errorMsg);
     }
   };
 
