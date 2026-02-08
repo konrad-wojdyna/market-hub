@@ -1,19 +1,33 @@
-import { Link, useParams } from "react-router-dom";
-import { Navbar } from "../../components";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { DeleteModal, Navbar } from "../../components";
 import no_image from "../../assets/no-picture.png";
 import { MapPin, TimerIcon } from "lucide-react";
 import type { Listing } from "../../types/listing";
 import listingService from "../../services/listingService";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const DetailListingPage = () => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Listing | null>(null);
 
+  const handleDelete = async () => {
+    try {
+      await listingService.deleteListing(Number(id));
+      toast.success("Deleted successfully");
+      navigate("/listings");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response = await listingService.getListingById(Number(id));
@@ -47,10 +61,10 @@ const DetailListingPage = () => {
               to={"/listings"}
               className="text-gray-400 transition-all hover:text-blue-600"
             >
-              Electronics
+              {data?.category}
             </Link>
             <span>/</span>
-            <p>{data?.title}</p>
+            <p>{data?.title.slice(0, 15)}...</p>
           </div>
           <article className="m-5 py-2 bg-white shadow-md rounded-md">
             <img
@@ -93,12 +107,28 @@ const DetailListingPage = () => {
               {" "}
               {/* Dodałem padding i zaokrąglenie dla tła */}
               <div className="flex items-center justify-center gap-3 max-w-md ml-auto">
-                <button className="flex-1 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors">
+                <Link
+                  to={`/listings/${data?.id}/edit`}
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+                >
                   Edit Listing
-                </button>
-                <button className="flex-1 px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition-colors">
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="flex-1 px-4 py-2.5 rounded-lg
+                   bg-red-600 hover:bg-red-700
+                    text-white font-medium
+                     transition-colors cursor-pointer"
+                >
                   Delete
                 </button>
+                <DeleteModal
+                  isOpen={isDeleteModalOpen}
+                  onClose={() => setIsDeleteModalOpen(false)}
+                  onConfirm={handleDelete}
+                  title={data?.title || ""}
+                />
               </div>
             </div>
           </article>
