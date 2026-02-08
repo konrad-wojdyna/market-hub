@@ -88,7 +88,7 @@ const EditListingForm = () => {
             className="border border-gray-300 p-2 rounded-lg"
           ></textarea>
           <small className="text-gray-600">
-            Optional - but lisitngs with descriptions sell faster!
+            Optional - but listings with descriptions sell faster!
           </small>
         </div>
         <div className="flex flex-col gap-2">
@@ -127,7 +127,7 @@ const EditListingForm = () => {
             </option>
             {CATEGORIES?.map((name) => {
               return (
-                <option key={name} value={name.toLocaleLowerCase()}>
+                <option key={name} value={name}>
                   {name}
                 </option>
               );

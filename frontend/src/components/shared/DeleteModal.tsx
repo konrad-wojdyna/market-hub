@@ -46,7 +46,7 @@ const DeleteModal = ({
         </div>
       </div>
     </div>,
-    document.body, // To jest właśnie Portal - wrzucamy to do body
+    document.body,
   );
 };
 
