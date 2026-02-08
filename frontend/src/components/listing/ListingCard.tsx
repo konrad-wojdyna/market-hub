@@ -1,18 +1,23 @@
 import { MapPin } from "lucide-react";
 import no_image from "../../assets/no-picture.png";
 import type { Listing } from "../../types/listing";
+import { useNavigate } from "react-router-dom";
 
 const ListingCard = ({
   id,
   title,
-  description,
   price,
   category,
   location,
   createdAt,
 }: Listing) => {
+  const navigate = useNavigate();
+
   return (
-    <article className="bg-white shadow-md rounded-md">
+    <article
+      className="bg-white shadow-md rounded-md cursor-pointer"
+      onClick={() => navigate(`/listings/${id}`)}
+    >
       <img src={no_image} alt={title} className="w-full h-50 object-cover " />
       <main className="flex flex-col gap-2 p-4">
         <h2 className="max-w-22 p-1 rounded-lg text-sm tracking-wider font-bold bg-blue-400 text-blue-800">
