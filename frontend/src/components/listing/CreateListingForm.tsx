@@ -1,11 +1,11 @@
-import { toast } from "react-toastify";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import type { CreateListingData } from "../../types/listing";
-import listingService from "../../services/listingService";
-import { useNavigate } from "react-router-dom";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { CATEGORIES } from "../../types/listing";
+import { useCreateListing } from "../../hooks/useCreateListing";
 
 const CreateListingForm = () => {
+  const { createListing, navigate } = useCreateListing();
+
   const {
     register,
     handleSubmit,
@@ -13,21 +13,9 @@ const CreateListingForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<CreateListingData>();
 
-  const navigate = useNavigate();
-
   const onSubmit: SubmitHandler<CreateListingData> = async (data) => {
-    try {
-      await listingService.createListing(data);
-      toast.success("Listing created!");
-      reset();
-      navigate("/listings");
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Pleasy try again!";
-      toast.error(errorMsg);
-    }
+    await createListing(data);
+    reset();
   };
 
   return (

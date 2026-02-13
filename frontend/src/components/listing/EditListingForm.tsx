@@ -1,15 +1,13 @@
-import { toast } from "react-toastify";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
 import type { CreateListingData, UpdateListingData } from "../../types/listing";
-import listingService from "../../services/listingService";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { CATEGORIES } from "../../types/listing";
+import { useUpdateListing } from "../../hooks/useUpdateListing";
 import { useEffect } from "react";
 
 const EditListingForm = () => {
   const { id } = useParams();
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -18,36 +16,15 @@ const EditListingForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<CreateListingData>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await listingService.getListingById(Number(id));
-        reset(data);
-      } catch (error) {
-        const errorMsg =
-          error instanceof Error
-            ? error.message
-            : "Something went wrong. Pleasy try again!";
-        toast.error(errorMsg);
-      }
-    };
-
-    if (id) fetchData();
-  }, [id, reset]);
+  const { updateListing, navigate, initialData } = useUpdateListing(Number(id));
 
   const onSubmit: SubmitHandler<UpdateListingData> = async (data) => {
-    try {
-      await listingService.updateListing(Number(id), data);
-      toast.success("Listing updated!");
-      navigate(`/listings/${id}`);
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again!";
-      toast.error(errorMsg);
-    }
+    await updateListing(data);
   };
+
+  useEffect(() => {
+    if (initialData) reset(initialData);
+  }, [initialData, reset]);
 
   return (
     <div className="flex items-center justify-center">
