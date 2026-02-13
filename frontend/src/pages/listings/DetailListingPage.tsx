@@ -1,52 +1,27 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { DeleteModal, Navbar } from "../../components";
 import no_image from "../../assets/no-picture.png";
 import { MapPin, TimerIcon } from "lucide-react";
-import type { Listing } from "../../types/listing";
+import { useState } from "react";
+import { useDeleteListing } from "../../hooks/useDeleteListing";
+import { useAsync } from "../../hooks/useAsync";
 import listingService from "../../services/listingService";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 const DetailListingPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
 
-  const navigate = useNavigate();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<Listing | null>(null);
-
-  const handleDelete = async () => {
-    try {
-      await listingService.deleteListing(Number(id));
-      toast.success("Deleted successfully");
-      navigate("/listings");
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error ? error.message : "Failed to delete";
-      toast.error(errorMsg);
-    }
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    const fetchData = async () => {
-      try {
-        const response = await listingService.getListingById(Number(id));
-        setData(response);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id]);
+  // const { data, error, isLoading } = useListingDetail(Number(id));
+  const { data, error, isLoading } = useAsync({
+    service: () => listingService.getListingById(Number(id)),
+    dependencies: [id],
+  });
+  const { handleDelete } = useDeleteListing(Number(id));
 
   return (
     <section>
       <Navbar />
+      {error && <div>{error}</div>}
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -106,8 +81,6 @@ const DetailListingPage = () => {
               </div>
             </div>
             <div className="m-5 p-4 rounded-xl">
-              {" "}
-              {/* Dodałem padding i zaokrąglenie dla tła */}
               <div className="flex items-center justify-center gap-3 max-w-md ml-auto">
                 <Link
                   to={`/listings/${data?.id}/edit`}
