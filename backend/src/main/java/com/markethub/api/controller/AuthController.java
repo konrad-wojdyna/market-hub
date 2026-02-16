@@ -2,6 +2,7 @@ package com.markethub.api.controller;
 
 import com.markethub.api.dto.request.LoginRequest;
 import com.markethub.api.dto.request.RegisterRequest;
+import com.markethub.api.dto.response.LoginResponse;
 import com.markethub.api.dto.response.UserResponse;
 import com.markethub.api.service.AuthService;
 import jakarta.validation.Valid;
@@ -23,10 +24,10 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(
+    public ResponseEntity<LoginResponse> login(
            @Valid @RequestBody LoginRequest loginRequest
     ){
-        UserResponse response = authService.login(loginRequest);
+        LoginResponse response = authService.login(loginRequest);
         return ResponseEntity.ok(response);
     }
 
