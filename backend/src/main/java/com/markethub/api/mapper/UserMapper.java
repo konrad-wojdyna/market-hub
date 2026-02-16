@@ -1,6 +1,7 @@
 package com.markethub.api.mapper;
 
 import com.markethub.api.dto.request.RegisterRequest;
+import com.markethub.api.dto.response.LoginResponse;
 import com.markethub.api.dto.response.UserResponse;
 import com.markethub.api.entity.User;
 
@@ -27,5 +28,4 @@ public class UserMapper {
                   user.getUpdatedAt()
           );
     }
-
 }
