@@ -9,3 +9,8 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# JWT Configuration
+# Generate a secure 256-bit key with: openssl rand -base64 32
+jwt.secret=your-256-bit-secret-key-base64-encoded-here
+jwt.expiration=86400000
