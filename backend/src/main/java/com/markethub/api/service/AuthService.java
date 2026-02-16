@@ -2,15 +2,20 @@ package com.markethub.api.service;
 
 import com.markethub.api.dto.request.LoginRequest;
 import com.markethub.api.dto.request.RegisterRequest;
+import com.markethub.api.dto.response.LoginResponse;
 import com.markethub.api.dto.response.UserResponse;
 import com.markethub.api.entity.User;
 import com.markethub.api.exception.EmailAlreadyExistsException;
+import com.markethub.api.exception.InvalidCredentialsException;
 import com.markethub.api.mapper.UserMapper;
 import com.markethub.api.repository.UserRepository;
+import com.markethub.api.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
 
     @Transactional
@@ -36,17 +42,20 @@ public class AuthService {
     }
 
 
-    @Transactional
-    public UserResponse login(LoginRequest request){
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest request){
 
         User user = userRepository.findByEmail(request.email()).orElseThrow(
-                () -> new IllegalArgumentException("Invalid credentials!")
+                InvalidCredentialsException::new
         );
 
-        if(!user.getPassword().equals(request.password())){
-             throw new IllegalArgumentException("Invalid credentials!");
+        if(!passwordEncoder.matches(request.password(), user.getPassword())){
+            throw new InvalidCredentialsException();
         }
 
-        return UserMapper.toResponse(user);
+       String token = jwtUtils.generateToken(user.getId(), user.getEmail(), "USER");
+
+        UserResponse userResponse = UserMapper.toResponse(user);
+        return new LoginResponse(token, "Bearer", userResponse);
     }
 }
