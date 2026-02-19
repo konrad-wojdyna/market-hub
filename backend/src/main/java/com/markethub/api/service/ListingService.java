@@ -4,7 +4,7 @@ import com.markethub.api.dto.request.CreateListingRequest;
 import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.entity.Listing;
-import com.markethub.api.exception.ListingNotFound;
+import com.markethub.api.exception.ListingNotFoundException;
 import com.markethub.api.mapper.ListingMapper;
 import com.markethub.api.repository.ListingRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +57,7 @@ public class ListingService {
     @Transactional
     public void deleteListing(Long id){
         if(!listingRepository.existsById(id)){
-            throw new ListingNotFound(id);
+            throw new ListingNotFoundException(id);
         }
 
         listingRepository.deleteById(id);
@@ -65,6 +65,6 @@ public class ListingService {
 
     private Listing findListingById(Long id){
         return listingRepository.findById(id)
-                .orElseThrow(() -> new ListingNotFound(id));
+                .orElseThrow(() -> new ListingNotFoundException(id));
     }
 }
