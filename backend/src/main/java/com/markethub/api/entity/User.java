@@ -35,9 +35,24 @@ public class User {
 
     private String phone;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private  UserProfile profile;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public void setProfile(UserProfile profile){
+        if(profile == null){
+            if(this.profile != null){
+                this.profile.setUser(null);
+            }
+        }else {
+        profile.setUser(this);
+        }
+        this.profile = profile;
+    }
 }
