@@ -4,7 +4,6 @@ package com.markethub.api.exception;
 import com.markethub.api.dto.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,9 +68,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler(ListingNotFound.class)
+    @ExceptionHandler(UserProfileNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserProfileNotFound(
+            UserProfileNotFoundException ex,
+            HttpServletRequest request
+    ){
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(ListingNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleListingNotFound(
-            ListingNotFound ex,
+            ListingNotFoundException ex,
             HttpServletRequest request){
 
         ErrorResponse errorResponse = new ErrorResponse(
@@ -87,6 +102,21 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(
             EmailAlreadyExistsException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(UserProfileAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserProfileAlreadyExists(
+            UserProfileAlreadyExistsException ex,
             HttpServletRequest request
     ){
         ErrorResponse errorResponse = new ErrorResponse(

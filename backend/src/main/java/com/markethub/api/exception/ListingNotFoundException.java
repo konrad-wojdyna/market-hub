@@ -1,11 +1,11 @@
 package com.markethub.api.exception;
 
-public class ListingNotFound extends RuntimeException {
-    public ListingNotFound(String message) {
+public class ListingNotFoundException extends RuntimeException {
+    public ListingNotFoundException(String message) {
         super(message);
     }
 
-    public ListingNotFound(Long id){
+    public ListingNotFoundException(Long id){
         super("Listing not found with id: " + id);
     }
 }
