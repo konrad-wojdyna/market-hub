@@ -20,14 +20,17 @@ public class Conversation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long user1Id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user1_id", nullable = false)
+    private User user1;
 
-    @Column(nullable = false)
-    private Long user2Id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user2_id", nullable = false)
+    private User user2;
 
-    @Column(nullable = false)
-    private Long listingId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "listing_id", nullable = false)
+    private Listing listing;
 
     @Column(name = "last_message_at")
     private LocalDateTime lastMessageAt;
