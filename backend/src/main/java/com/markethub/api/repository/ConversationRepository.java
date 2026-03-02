@@ -14,11 +14,14 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
 
     @Query("""
      SELECT c FROM Conversation c
-     WHERE c.listingId = :listingId
+     JOIN FETCH c.user1
+     JOIN FETCH c.user2
+     JOIN FETCH c.listing
+     WHERE c.listing.id = :listingId
      AND (
-         (c.user1Id = :uid1 AND c.user2Id = :uid2)
+         (c.user1.id = :uid1 AND c.user2.id = :uid2)
          OR
-         (c.user1Id = :uid2 AND c.user2Id = :uid1)
+         (c.user1.id = :uid2 AND c.user2.id = :uid1)
          )
     """)
     Optional<Conversation> findExistingConversation(
@@ -29,8 +32,11 @@ public interface ConversationRepository extends JpaRepository<Conversation, Long
 
     @Query("""
     SELECT c FROM Conversation c
-        WHERE c.user1Id = :uid OR c.user2Id = :uid
+    JOIN FETCH c.user1
+    JOIN FETCH c.user2
+    JOIN FETCH c.listing
+    WHERE c.user1.id = :userId OR c.user2.id = :userId
     """)
     List<Conversation> findConversationsByUserId(
-            @Param("uid") Long uid);
+            @Param("userId") Long userId);
 }
