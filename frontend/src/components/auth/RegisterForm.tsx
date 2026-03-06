@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { RegisterData } from "../../types/auth";
+import type { LoginData, RegisterData } from "../../types/auth";
 import useRegister from "../../hooks/useRegister";
 
 const RegisterForm = () => {
