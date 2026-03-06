@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { Routes, Route } from "react-router";
 import {
   LoginPage,
   RegisterPage,
@@ -13,7 +13,7 @@ import {
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -33,7 +33,7 @@ const App = () => {
         <Route path="/messages/:conversationId" element={<MessagesPage />} />
       </Routes>
       <ToastContainer />
-    </BrowserRouter>
+    </>
   );
 };
 export default App;
