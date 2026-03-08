@@ -10,3 +10,6 @@ export { default as DetailListingPage } from "./listings/DetailListingPage";
 
 //Messages
 export { default as MessagesPage } from "./MessagesPage";
+
+//Protected
+export { default as ProtectedRoute } from "./ProtectedRoute";
