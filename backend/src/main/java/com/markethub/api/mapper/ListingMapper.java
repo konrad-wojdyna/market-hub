@@ -4,6 +4,7 @@ import com.markethub.api.dto.request.CreateListingRequest;
 import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.entity.Listing;
+import com.markethub.api.entity.User;
 
 public class ListingMapper {
 
@@ -15,21 +16,26 @@ public class ListingMapper {
                 listing.getPrice(),
                 listing.getCategory(),
                 listing.getLocation(),
-                listing.getCreatedAt()
+                listing.getCreatedAt(),
+                listing.getUser().getId()
         );
     }
 
-    public static Listing toEntity(CreateListingRequest request){
+    public static Listing toEntity(CreateListingRequest request, User currentUser){
         return Listing.builder()
+
                 .title(request.title())
                 .description(request.description())
                 .price(request.price())
                 .category(request.category())
                 .location(request.location())
+                .user(currentUser)
                 .build();
     }
 
-    public static Listing updateListing(Listing listing, UpdateListingRequest request){
+    public static Listing updateListing(
+            Listing listing,
+            UpdateListingRequest request){
 
         listing.setTitle(request.title());
         listing.setDescription(request.description());
