@@ -6,12 +6,13 @@ import { useState } from "react";
 import { useDeleteListing } from "../../hooks/useDeleteListing";
 import { useAsync } from "../../hooks/useAsync";
 import listingService from "../../services/listingService";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 const DetailListingPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
+  const { user } = useAuthContext();
 
-  // const { data, error, isLoading } = useListingDetail(Number(id));
   const { data, error, isLoading } = useAsync({
     service: () => listingService.getListingById(Number(id)),
     dependencies: [id],
@@ -82,22 +83,26 @@ const DetailListingPage = () => {
             </div>
             <div className="m-5 p-4 rounded-xl">
               <div className="flex items-center justify-center gap-3 max-w-md ml-auto">
-                <Link
-                  to={`/listings/${data?.id}/edit`}
-                  className="flex-1 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
-                >
-                  Edit Listing
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setIsDeleteModalOpen(true)}
-                  className="flex-1 px-4 py-2.5 rounded-lg
-                   bg-red-600 hover:bg-red-700
+                {user?.id === data?.ownerId && (
+                  <>
+                    <Link
+                      to={`/listings/${data?.id}/edit`}
+                      className="flex-1 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
+                    >
+                      Edit Listing
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setIsDeleteModalOpen(true)}
+                      className="flex-1 px-4 py-2.5 rounded-lg
+                    bg-red-600 hover:bg-red-700
                     text-white font-medium
-                     transition-colors cursor-pointer"
-                >
-                  Delete
-                </button>
+                    transition-colors cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
                 <DeleteModal
                   isOpen={isDeleteModalOpen}
                   onClose={() => setIsDeleteModalOpen(false)}

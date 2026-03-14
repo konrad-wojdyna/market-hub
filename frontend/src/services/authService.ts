@@ -10,12 +10,12 @@ export interface AuthResponse {
 
 class AuthService {
   async login(data: LoginData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>(`/login`, data);
+    const response = await api.post<AuthResponse>(`/auth/login`, data);
     return response.data;
   }
 
   async register(data: RegisterData): Promise<void> {
-    await api.post<void>(`/register`, data);
+    await api.post<void>(`/auth/register`, data);
   }
 }
 
