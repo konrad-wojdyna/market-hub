@@ -10,5 +10,6 @@ public record ListingResponse(
         BigDecimal price,
         String category,
         String location,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        Long ownerId
 ) {}

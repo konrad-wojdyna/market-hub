@@ -6,6 +6,7 @@ export interface Listing {
   category: string;
   location: string;
   createdAt: string;
+  ownerId: number;
 }
 
 export interface CreateListingData {

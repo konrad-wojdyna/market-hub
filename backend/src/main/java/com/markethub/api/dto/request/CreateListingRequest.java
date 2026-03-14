@@ -1,6 +1,8 @@
 package com.markethub.api.dto.request;
 
+import com.markethub.api.entity.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -22,5 +24,4 @@ public record CreateListingRequest(
         String category,
 
         String location
-) {
-}
+) {}

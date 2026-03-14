@@ -53,6 +53,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedAccess(
+            UnauthorizedAccessException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse response = new ErrorResponse(
+           HttpStatus.FORBIDDEN.value(),
+           HttpStatus.FORBIDDEN.getReasonPhrase(),
+           ex.getMessage(),
+           request.getRequestURI()
+        );
+
+        return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFound(
             UserNotFoundException ex,
