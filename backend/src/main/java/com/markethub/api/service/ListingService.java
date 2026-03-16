@@ -3,12 +3,15 @@ package com.markethub.api.service;
 import com.markethub.api.dto.request.CreateListingRequest;
 import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.ListingResponse;
+import com.markethub.api.entity.Category;
 import com.markethub.api.entity.Listing;
 import com.markethub.api.entity.User;
+import com.markethub.api.exception.CategoryNotFound;
 import com.markethub.api.exception.ListingNotFound;
 import com.markethub.api.exception.UnauthorizedAccessException;
 import com.markethub.api.exception.UserNotFoundException;
 import com.markethub.api.mapper.ListingMapper;
+import com.markethub.api.repository.CategoryRepository;
 import com.markethub.api.repository.ListingRepository;
 import com.markethub.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import java.util.List;
 public class ListingService {
 
     private final ListingRepository listingRepository;
+    private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -32,7 +36,10 @@ public class ListingService {
         User user = userRepository.findById(currentUserId).orElseThrow(() ->
                 new UserNotFoundException(currentUserId));
 
-        Listing listing = ListingMapper.toEntity(request, user);
+        Category category = categoryRepository.findById(request.categoryId()).orElseThrow(() ->
+                new CategoryNotFound(request.categoryId()));
+
+        Listing listing = ListingMapper.toEntity(request, user, category);
         Listing newListing = listingRepository.save(listing);
 
         return ListingMapper.toResponse(newListing);
@@ -61,8 +68,11 @@ public class ListingService {
 
        checkPermissions(currentUserId, listing);
 
+        Category category = categoryRepository.findById(request.categoryId()).orElseThrow(() ->
+                new CategoryNotFound(request.categoryId()));
+
         Listing updatedListing =
-                ListingMapper.updateListing(listing, request);
+                ListingMapper.updateListing(listing, request, category);
         Listing savedListing = listingRepository.save(updatedListing);
 
         return ListingMapper.toResponse(savedListing);
