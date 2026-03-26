@@ -8,6 +8,7 @@ public record UserResponse(
         String firstName,
         String lastName,
         String phone,
+        String role,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
