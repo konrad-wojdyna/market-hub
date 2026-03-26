@@ -13,3 +13,7 @@ export { default as MessagesPage } from "./MessagesPage";
 
 //Protected
 export { default as ProtectedRoute } from "./ProtectedRoute";
+
+//Admin
+export { default as AdminPage } from "./admin/AdminPage";
+export { default as AdminRoute } from "./admin/AdminRoute";
