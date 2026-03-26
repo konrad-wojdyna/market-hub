@@ -53,7 +53,7 @@ public class AuthService {
             throw new InvalidCredentialsException();
         }
 
-       String token = jwtUtils.generateToken(user.getId(), user.getEmail(), "USER");
+       String token = jwtUtils.generateToken(user.getId(), user.getEmail(), user.getRole().name());
 
         UserResponse userResponse = UserMapper.toResponse(user);
         return new LoginResponse(token, "Bearer", userResponse);

@@ -2,6 +2,11 @@
 export { default as RegisterForm } from "./auth/RegisterForm";
 export { default as LoginForm } from "./auth/LoginForm";
 
+//Admin
+export { default as CategoryCard } from "./admin/CategoryCard";
+export { default as LinksMenu } from "./admin/LinksMenu";
+export { default as CategoryTable } from "./admin/CategoryTable";
+
 //Listing
 export { default as ListingList } from "./listing/ListingList";
 export { default as CreateListingForm } from "./listing/CreateListingForm";

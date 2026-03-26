@@ -99,6 +99,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
+    @ExceptionHandler(CategoryNotFound.class)
+    public ResponseEntity<ErrorResponse> handleCategoryNotFound(
+            CategoryNotFound ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(
             EmailAlreadyExistsException ex,
@@ -109,6 +124,21 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT.getReasonPhrase(),
                 ex.getMessage(),
                 request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(SlugAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleSlugAlreadyExists(
+            SlugAlreadyExistsException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.CONFLICT.value(),
+            HttpStatus.CONFLICT.getReasonPhrase(),
+            ex.getMessage(),
+            request.getRequestURI()
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);

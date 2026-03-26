@@ -1,10 +1,13 @@
 import type { CreateListingData } from "../../types/listing";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { CATEGORIES } from "../../types/listing";
 import { useCreateListing } from "../../hooks/useCreateListing";
+import { useCategories } from "../../hooks/useCategories";
+import Loading from "../shared/LoadingComponent";
+import { ErrorComponent } from "..";
 
 const CreateListingForm = () => {
   const { createListing, navigate } = useCreateListing();
+  const { categories, error, isLoading } = useCategories(true);
 
   const {
     register,
@@ -17,6 +20,14 @@ const CreateListingForm = () => {
     await createListing(data);
     reset();
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <ErrorComponent message={error} />;
+  }
 
   return (
     <div className="flex items-center justify-center">
@@ -88,16 +99,16 @@ const CreateListingForm = () => {
             id="category"
             defaultValue=""
             required
-            {...register("category")}
+            {...register("categoryId", { valueAsNumber: true })}
             className="border border-gray-300 p-2 rounded-lg"
           >
             <option value="" disabled hidden>
               Select a category
             </option>
-            {CATEGORIES?.map((name) => {
+            {categories?.map((cat) => {
               return (
-                <option key={name} value={name.toLocaleLowerCase()}>
-                  {name}
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
                 </option>
               );
             })}

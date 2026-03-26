@@ -11,7 +11,7 @@ const useLogin = () => {
   const loginUser = async (data: LoginData) => {
     try {
       await login(data);
-      navigate("/listings");
+      navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const backendMessage = error.response?.data?.message;

@@ -3,6 +3,7 @@ package com.markethub.api.mapper;
 import com.markethub.api.dto.request.RegisterRequest;
 import com.markethub.api.dto.response.LoginResponse;
 import com.markethub.api.dto.response.UserResponse;
+import com.markethub.api.entity.Role;
 import com.markethub.api.entity.User;
 
 public class UserMapper {
@@ -14,6 +15,7 @@ public class UserMapper {
                 .firstName(request.firstName())
                 .lastName(request.lastName())
                 .phone(request.phone())
+                .role(Role.USER)
                 .build();
     }
 
@@ -24,6 +26,7 @@ public class UserMapper {
                   user.getFirstName(),
                   user.getLastName(),
                   user.getPhone(),
+                  user.getRole().name(),
                   user.getCreatedAt(),
                   user.getUpdatedAt()
           );

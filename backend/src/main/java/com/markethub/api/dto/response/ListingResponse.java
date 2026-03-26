@@ -8,6 +8,7 @@ public record ListingResponse(
         String title,
         String description,
         BigDecimal price,
+        Long categoryId,
         String category,
         String location,
         LocalDateTime createdAt,

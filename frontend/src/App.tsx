@@ -10,6 +10,8 @@ import {
   EditListingPage,
   MessagesPage,
   ProtectedRoute,
+  AdminPage,
+  AdminRoute,
 } from "./pages";
 
 const App = () => {
@@ -18,8 +20,11 @@ const App = () => {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route index element={<ListingPage />} />
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminPage />} />
+        </Route>
         <Route element={<ProtectedRoute />}>
-          <Route path="/listings" element={<ListingPage />} />
           <Route path="/listings/new" element={<CreateListingPage />} />
           <Route path="/listings/:id" element={<DetailListingPage />} />
           <Route path="/listings/:id/edit" element={<EditListingPage />} />

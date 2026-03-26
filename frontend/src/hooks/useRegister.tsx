@@ -3,11 +3,14 @@ import type { RegisterData } from "../types/auth";
 import authService from "../services/authService";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useAuthContext } from "./useAuthContext";
 
 const useRegister = () => {
   const navigate = useNavigate();
+  const { logout} = useAuthContext();
 
   const registerUser = async (data: RegisterData) => {
+    logout();
     try {
       await authService.register(data);
       toast.success("Register successfully!");
