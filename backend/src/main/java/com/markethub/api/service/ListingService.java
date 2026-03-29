@@ -1,6 +1,7 @@
 package com.markethub.api.service;
 
 import com.markethub.api.dto.request.CreateListingRequest;
+import com.markethub.api.dto.request.ListingSearchParams;
 import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.entity.Category;
@@ -14,11 +15,14 @@ import com.markethub.api.mapper.ListingMapper;
 import com.markethub.api.repository.CategoryRepository;
 import com.markethub.api.repository.ListingRepository;
 import com.markethub.api.repository.UserRepository;
+import com.markethub.api.repository.specification.ListingSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,11 +50,18 @@ public class ListingService {
     }
 
     @Transactional(readOnly = true)
-    public List<ListingResponse> getAllListing(){
-        return listingRepository.findAll()
-                .stream()
-                .map(ListingMapper::toResponse)
-                .toList();
+    public Page<ListingResponse> getAllListing(
+            ListingSearchParams params,
+            Pageable pageable
+    ){
+       Specification<Listing> spec = ListingSpecification
+               .hasTitle(params.title())
+                       .and(ListingSpecification.hasLocation(params.location()))
+                               .and(ListingSpecification.hasPriceBetween(params.minPrice(), params.maxPrice()))
+                                       .and(ListingSpecification.hasCategory(params.categoryId()));
+
+       return listingRepository.findAll(spec, pageable)
+               .map(ListingMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
