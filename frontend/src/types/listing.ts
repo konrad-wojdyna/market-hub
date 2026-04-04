@@ -25,3 +25,14 @@ export interface UpdateListingData {
   categoryId: number;
   location?: string;
 }
+
+export interface ListingSearchParams {
+  title?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  categoryId?: number;
+  location?: string;
+  sort?: string;
+  page?: number;
+  size?: number;
+}

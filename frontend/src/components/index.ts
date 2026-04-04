@@ -11,6 +11,8 @@ export { default as CategoryTable } from "./admin/CategoryTable";
 export { default as ListingList } from "./listing/ListingList";
 export { default as CreateListingForm } from "./listing/CreateListingForm";
 export { default as EditListingForm } from "./listing/EditListingForm";
+export { default as SearchFilters } from "./listing/SearchFilters";
+export { default as Pagination } from "./listing/Pagination";
 
 //Messages
 export { default as ConversationList } from "./messages/ConversationList";
