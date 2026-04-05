@@ -7,6 +7,7 @@ import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.entity.Category;
 import com.markethub.api.entity.Listing;
 import com.markethub.api.entity.User;
+import com.markethub.api.event.ListingCreatedEvent;
 import com.markethub.api.exception.CategoryNotFound;
 import com.markethub.api.exception.ListingNotFound;
 import com.markethub.api.exception.UnauthorizedAccessException;
@@ -17,6 +18,7 @@ import com.markethub.api.repository.ListingRepository;
 import com.markethub.api.repository.UserRepository;
 import com.markethub.api.repository.specification.ListingSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ListingService {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     private final ListingRepository listingRepository;
     private final CategoryRepository categoryRepository;
@@ -45,6 +49,8 @@ public class ListingService {
 
         Listing listing = ListingMapper.toEntity(request, user, category);
         Listing newListing = listingRepository.save(listing);
+
+        eventPublisher.publishEvent(new ListingCreatedEvent(newListing));
 
         return ListingMapper.toResponse(newListing);
     }
