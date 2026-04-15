@@ -2,12 +2,18 @@ import type {
   Listing,
   CreateListingData,
   UpdateListingData,
+  ListingSearchParams,
 } from "../types/listing";
+import type { Page } from "../types/page";
 import { api } from "./api";
 
 class ListingService {
-  async getAllListing(): Promise<Listing[]> {
-    const response = await api.get("/listings");
+  async getAllListing(
+    searchParams?: Partial<ListingSearchParams>,
+  ): Promise<Page<Listing>> {
+    const response = await api.get("/listings", {
+      params: searchParams,
+    });
     return response.data;
   }
 

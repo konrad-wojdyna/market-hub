@@ -2,12 +2,17 @@ package com.markethub.api.controller;
 
 
 import com.markethub.api.dto.request.CreateListingRequest;
+import com.markethub.api.dto.request.ListingSearchParams;
 import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.security.userdetails.UserPrincipal;
 import com.markethub.api.service.ListingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,8 +28,12 @@ public class ListingController {
     private final ListingService listingService;
 
     @GetMapping
-    public ResponseEntity<List<ListingResponse>> getAllListings(){
-        List<ListingResponse> response = listingService.getAllListing();
+    public ResponseEntity<Page<ListingResponse>> getAllListings(
+            @Valid @ModelAttribute ListingSearchParams params,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable
+            ){
+        Page<ListingResponse> response = listingService.getAllListing(params, pageable);
         return ResponseEntity.ok(response);
     }
 
