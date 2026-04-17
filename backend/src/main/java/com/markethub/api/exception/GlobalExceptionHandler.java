@@ -2,9 +2,9 @@ package com.markethub.api.exception;
 
 
 import com.markethub.api.dto.response.ErrorResponse;
+import com.markethub.api.listing.domain.ListingNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

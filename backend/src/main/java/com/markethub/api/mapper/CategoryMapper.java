@@ -2,10 +2,8 @@ package com.markethub.api.mapper;
 
 import com.markethub.api.dto.request.CreateCategoryRequest;
 import com.markethub.api.dto.request.UpdateCategoryRequest;
-import com.markethub.api.dto.request.UpdateListingRequest;
 import com.markethub.api.dto.response.CategoryResponse;
 import com.markethub.api.entity.Category;
-import com.markethub.api.entity.Listing;
 
 public class CategoryMapper {
 

@@ -1,38 +1,34 @@
-package com.markethub.api.service;
+package com.markethub.api.listing.application;
 
-import com.markethub.api.dto.request.CreateListingRequest;
-import com.markethub.api.dto.request.ListingSearchParams;
-import com.markethub.api.dto.request.UpdateListingRequest;
-import com.markethub.api.dto.response.ListingResponse;
+import com.markethub.api.listing.application.ports.ListingPort;
+import com.markethub.api.listing.infrastructure.controller.dto.request.CreateListingRequest;
+import com.markethub.api.listing.infrastructure.controller.dto.request.UpdateListingRequest;
+import com.markethub.api.listing.infrastructure.controller.dto.response.ListingResponse;
 import com.markethub.api.entity.Category;
-import com.markethub.api.entity.Listing;
+import com.markethub.api.listing.domain.Listing;
 import com.markethub.api.entity.User;
-import com.markethub.api.event.ListingCreatedEvent;
 import com.markethub.api.exception.CategoryNotFound;
-import com.markethub.api.exception.ListingNotFound;
+import com.markethub.api.listing.domain.ListingNotFound;
 import com.markethub.api.exception.UnauthorizedAccessException;
 import com.markethub.api.exception.UserNotFoundException;
-import com.markethub.api.mapper.ListingMapper;
+import com.markethub.api.listing.infrastructure.mapper.ListingMapper;
 import com.markethub.api.repository.CategoryRepository;
-import com.markethub.api.repository.ListingRepository;
 import com.markethub.api.repository.UserRepository;
-import com.markethub.api.repository.specification.ListingSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @RequiredArgsConstructor
 public class ListingService {
 
+    private final ListingPort listingPort;
+
     private final ApplicationEventPublisher eventPublisher;
 
-    private final ListingRepository listingRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
@@ -48,7 +44,7 @@ public class ListingService {
                 new CategoryNotFound(request.categoryId()));
 
         Listing listing = ListingMapper.toEntity(request, user, category);
-        Listing newListing = listingRepository.save(listing);
+        Listing newListing = listingPort.save(listing);
 
         eventPublisher.publishEvent(new ListingCreatedEvent(newListing));
 
@@ -60,20 +56,16 @@ public class ListingService {
             ListingSearchParams params,
             Pageable pageable
     ){
-       Specification<Listing> spec = ListingSpecification
-               .hasTitle(params.title())
-                       .and(ListingSpecification.hasLocation(params.location()))
-                               .and(ListingSpecification.hasPriceBetween(params.minPrice(), params.maxPrice()))
-                                       .and(ListingSpecification.hasCategory(params.categoryId()));
-
-       return listingRepository.findAll(spec, pageable)
-               .map(ListingMapper::toResponse);
+       return listingPort.findAll(params, pageable).map(
+               ListingMapper::toResponse
+       );
     }
 
     @Transactional(readOnly = true)
     public ListingResponse getListingById(Long id){
 
         Listing listing = findListingById(id);
+
         return ListingMapper.toResponse(listing);
     }
 
@@ -90,7 +82,7 @@ public class ListingService {
 
         Listing updatedListing =
                 ListingMapper.updateListing(listing, request, category);
-        Listing savedListing = listingRepository.save(updatedListing);
+        Listing savedListing = listingPort.save(updatedListing);
 
         return ListingMapper.toResponse(savedListing);
     }
@@ -101,12 +93,11 @@ public class ListingService {
         Listing listing = findListingById(listingId);
         checkPermissions(currentUserId, listing);
 
-        listingRepository.delete(listing);
+        listingPort.deleteById(listingId);
     }
 
     private Listing findListingById(Long id){
-        return listingRepository.findById(id)
-                .orElseThrow(() -> new ListingNotFound(id));
+        return listingPort.findById(id).orElseThrow(() -> new ListingNotFound(id));
     }
 
     private void checkPermissions(Long currentUserId, Listing listing){

@@ -1,7 +1,7 @@
-package com.markethub.api.listener;
+package com.markethub.api.listing.infrastructure.listener;
 
-import com.markethub.api.entity.Listing;
-import com.markethub.api.event.ListingCreatedEvent;
+import com.markethub.api.listing.domain.Listing;
+import com.markethub.api.listing.application.ListingCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

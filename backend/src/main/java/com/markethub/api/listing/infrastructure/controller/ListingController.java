@@ -1,12 +1,12 @@
-package com.markethub.api.controller;
+package com.markethub.api.listing.infrastructure.controller;
 
 
-import com.markethub.api.dto.request.CreateListingRequest;
-import com.markethub.api.dto.request.ListingSearchParams;
-import com.markethub.api.dto.request.UpdateListingRequest;
-import com.markethub.api.dto.response.ListingResponse;
+import com.markethub.api.listing.infrastructure.controller.dto.request.CreateListingRequest;
+import com.markethub.api.listing.application.ListingSearchParams;
+import com.markethub.api.listing.infrastructure.controller.dto.request.UpdateListingRequest;
+import com.markethub.api.listing.infrastructure.controller.dto.response.ListingResponse;
 import com.markethub.api.security.userdetails.UserPrincipal;
-import com.markethub.api.service.ListingService;
+import com.markethub.api.listing.application.ListingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/listings")

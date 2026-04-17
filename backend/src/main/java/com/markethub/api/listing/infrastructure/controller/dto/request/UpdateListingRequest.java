@@ -1,4 +1,4 @@
-package com.markethub.api.dto.request;
+package com.markethub.api.listing.infrastructure.controller.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

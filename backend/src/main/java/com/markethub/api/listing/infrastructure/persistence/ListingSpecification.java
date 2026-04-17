@@ -1,6 +1,6 @@
-package com.markethub.api.repository.specification;
+package com.markethub.api.listing.infrastructure.persistence;
 
-import com.markethub.api.entity.Listing;
+import com.markethub.api.listing.domain.Listing;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;

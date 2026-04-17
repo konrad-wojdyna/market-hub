@@ -1,7 +1,8 @@
-package com.markethub.api.entity;
+package com.markethub.api.listing.domain;
 
+import com.markethub.api.entity.Category;
+import com.markethub.api.entity.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
