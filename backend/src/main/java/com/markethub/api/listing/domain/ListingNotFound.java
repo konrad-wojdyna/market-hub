@@ -1,4 +1,4 @@
-package com.markethub.api.exception;
+package com.markethub.api.listing.domain;
 
 public class ListingNotFound extends RuntimeException {
     public ListingNotFound(String message) {

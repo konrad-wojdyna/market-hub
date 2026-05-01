@@ -1,4 +1,4 @@
-package com.markethub.api.dto.request;
+package com.markethub.api.listing.application;
 
 import jakarta.validation.constraints.PositiveOrZero;
 

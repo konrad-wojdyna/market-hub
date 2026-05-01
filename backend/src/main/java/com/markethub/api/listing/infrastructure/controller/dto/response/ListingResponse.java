@@ -1,4 +1,4 @@
-package com.markethub.api.dto.response;
+package com.markethub.api.listing.infrastructure.controller.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

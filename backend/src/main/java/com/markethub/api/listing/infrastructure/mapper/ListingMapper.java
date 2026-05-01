@@ -1,11 +1,11 @@
-package com.markethub.api.mapper;
+package com.markethub.api.listing.infrastructure.mapper;
 
-import com.markethub.api.dto.request.CreateListingRequest;
-import com.markethub.api.dto.request.UpdateListingRequest;
-import com.markethub.api.dto.response.ListingResponse;
 import com.markethub.api.entity.Category;
-import com.markethub.api.entity.Listing;
 import com.markethub.api.entity.User;
+import com.markethub.api.listing.domain.Listing;
+import com.markethub.api.listing.infrastructure.controller.dto.request.CreateListingRequest;
+import com.markethub.api.listing.infrastructure.controller.dto.request.UpdateListingRequest;
+import com.markethub.api.listing.infrastructure.controller.dto.response.ListingResponse;
 
 public class ListingMapper {
 
