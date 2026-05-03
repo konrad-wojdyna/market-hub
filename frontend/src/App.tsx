@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import {
   LoginPage,
   RegisterPage,

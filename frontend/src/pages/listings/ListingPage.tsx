@@ -63,7 +63,7 @@ const ListingPage = () => {
   }
 
   return (
-    <section>
+    <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-6">
       <SearchFilters onSearch={handleSearch} initialParams={mappedParams} />
       <ListingList listings={listings?.content || []} isLoading={isLoading} />
       <Pagination
@@ -71,7 +71,7 @@ const ListingPage = () => {
         totalPages={listings?.totalPages ?? 0}
         onPageChange={handlePageChange}
       />
-    </section>
+    </div>
   );
 };
 export default ListingPage;

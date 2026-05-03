@@ -7,12 +7,17 @@ const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <section>
+    <div className="min-h-screen flex flex-col bg-page-bg">
       <Navbar setIsSidebarOpen={setIsSidebarOpen} />
-      <Outlet />
-      <Sidebar isSidebarOpen={isSidebarOpen} />
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <main className="flex-1">
+        <Outlet />
+      </main>
       {/* <Footer /> */}
-    </section>
+    </div>
   );
 };
 export default MainLayout;
