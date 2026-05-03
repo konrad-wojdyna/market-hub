@@ -23,3 +23,6 @@ export { default as ErrorComponent } from "./shared/ErrorComponent";
 export { default as Loading } from "./shared/LoadingComponent";
 export { default as Navbar } from "./shared/Navbar";
 export { default as DeleteModal } from "./shared/DeleteModal";
+export { default as Sidebar } from "./shared/Sidebar";
+export { default as MainLayout } from "./shared/layouts/MainLayout";
+export { default as AuthLayout } from "./shared/layouts/AuthLayout";
