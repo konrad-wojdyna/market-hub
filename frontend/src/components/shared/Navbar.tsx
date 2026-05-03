@@ -1,14 +1,25 @@
+import type { Dispatch, SetStateAction } from "react";
+import { Menu, House } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
-const Navbar = () => {
+type NavbarProps = {
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const Navbar = ({ setIsSidebarOpen }: NavbarProps) => {
   const { user, isAuthenticated, isInitialized, logout } = useAuthContext();
 
   if (!isInitialized) return null;
 
   return (
-    <nav className="flex justify-between items-center p-4">
-      <p className="text-2xl font-bold text-blue-600">MarketHub</p>
+    <nav className="flex justify-between items-center p-4 bg-brand-light">
+      <div className="flex items-center gap-2 text-2xl font-bold">
+        <House className="text-white bg-brand p-1 rounded-sm" />
+        <span className="flex items-center text-xl font-bold">
+          <span className="text-brand">Market</span>Hub
+        </span>
+      </div>
       {isAuthenticated ? (
         <>
           <div className="flex items-center gap-2">
@@ -22,8 +33,7 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={logout}
-                className="border bg-blue-600 text-white font-bold tracking-wide py-2 px-4 rounded-lg cursor-pointer
-            transition-all hover:bg-blue-700"
+                className="text-sm text-gray-500 hover:text-brand cursor-pointer"
               >
                 Logout
               </button>
@@ -32,8 +42,12 @@ const Navbar = () => {
         </>
       ) : (
         <div className="flex gap-2">
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
+          <Menu
+            onClick={() => setIsSidebarOpen((open) => !open)}
+            className="cursor-pointer"
+          />
+          {/* <Link to="/login">Login</Link>
+          <Link to="/register">Register</Link> */}
         </div>
       )}
     </nav>
