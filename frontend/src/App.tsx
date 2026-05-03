@@ -13,23 +13,34 @@ import {
   AdminPage,
   AdminRoute,
 } from "./pages";
+import { AuthLayout, MainLayout } from "./components";
 
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route index element={<ListingPage />} />
-        <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<AdminPage />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Route>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/listings/new" element={<CreateListingPage />} />
-          <Route path="/listings/:id" element={<DetailListingPage />} />
-          <Route path="/listings/:id/edit" element={<EditListingPage />} />
-          <Route path="/messages" element={<MessagesPage />} />
-          <Route path="/messages/:conversationId" element={<MessagesPage />} />
+
+        <Route element={<MainLayout />}>
+          <Route index element={<ListingPage />} />
+
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/listings/new" element={<CreateListingPage />} />
+            <Route path="/listings/:id" element={<DetailListingPage />} />
+            <Route path="/listings/:id/edit" element={<EditListingPage />} />
+            <Route path="/messages" element={<MessagesPage />} />
+            <Route
+              path="/messages/:conversationId"
+              element={<MessagesPage />}
+            />
+          </Route>
         </Route>
       </Routes>
       <ToastContainer />
