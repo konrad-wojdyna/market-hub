@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router-dom";
 import {
   ListingList,
   ErrorComponent,
-  Navbar,
   SearchFilters,
   Pagination,
 } from "../../components";
@@ -64,8 +63,7 @@ const ListingPage = () => {
   }
 
   return (
-    <section className="p-5">
-      <Navbar />
+    <section>
       <SearchFilters onSearch={handleSearch} initialParams={mappedParams} />
       <ListingList listings={listings?.content || []} isLoading={isLoading} />
       <Pagination
