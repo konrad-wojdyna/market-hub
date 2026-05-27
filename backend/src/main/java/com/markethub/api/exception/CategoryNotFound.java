@@ -1,11 +1,8 @@
 package com.markethub.api.exception;
 
-public class CategoryNotFound extends RuntimeException {
-    public CategoryNotFound(String message) {
-        super(message);
-    }
+public class CategoryNotFound extends ResourceNotFoundException {
 
-    public CategoryNotFound(Long id){
-        super("Category not found with id: " + id);
+    public CategoryNotFound(Long id) {
+        super("Category", id);
     }
 }

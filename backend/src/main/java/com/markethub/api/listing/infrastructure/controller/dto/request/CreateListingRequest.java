@@ -16,6 +16,7 @@ public record CreateListingRequest(
         String description,
 
         @Positive(message = "Price must be positive")
+        @NotNull(message = "Price is required")
         BigDecimal price,
 
         @NotNull(message = "Category is required")

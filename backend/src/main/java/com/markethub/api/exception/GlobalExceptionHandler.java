@@ -26,15 +26,7 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage()));
 
-        ErrorResponse errorResponse = new ErrorResponse(
-             HttpStatus.BAD_REQUEST.value(),
-             HttpStatus.BAD_REQUEST.getReasonPhrase(),
-             "Validation failed",
-                request.getRequestURI(),
-                errors
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", request, errors);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
@@ -43,14 +35,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ){
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
-                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
     @ExceptionHandler(UnauthorizedAccessException.class)
@@ -58,14 +43,7 @@ public class GlobalExceptionHandler {
             UnauthorizedAccessException ex,
             HttpServletRequest request
     ){
-        ErrorResponse response = new ErrorResponse(
-           HttpStatus.FORBIDDEN.value(),
-           HttpStatus.FORBIDDEN.getReasonPhrase(),
-           ex.getMessage(),
-           request.getRequestURI()
-        );
-
-        return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        return buildErrorResponse(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -74,14 +52,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ){
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     @ExceptionHandler(ListingNotFound.class)
@@ -89,14 +60,7 @@ public class GlobalExceptionHandler {
             ListingNotFound ex,
             HttpServletRequest request){
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     @ExceptionHandler(CategoryNotFound.class)
@@ -104,14 +68,7 @@ public class GlobalExceptionHandler {
             CategoryNotFound ex,
             HttpServletRequest request
     ){
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
@@ -119,14 +76,7 @@ public class GlobalExceptionHandler {
             EmailAlreadyExistsException ex,
             HttpServletRequest request
     ){
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
     @ExceptionHandler(SlugAlreadyExistsException.class)
@@ -134,13 +84,40 @@ public class GlobalExceptionHandler {
             SlugAlreadyExistsException ex,
             HttpServletRequest request
     ){
+        return buildErrorResponse(HttpStatus.CONFLICT,
+                ex.getMessage(),
+                request);
+    }
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(
+            HttpStatus status,
+            String message,
+            HttpServletRequest httpRequest
+                                                              ){
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.CONFLICT.value(),
-            HttpStatus.CONFLICT.getReasonPhrase(),
-            ex.getMessage(),
-            request.getRequestURI()
+                status.value(),
+                status.getReasonPhrase(),
+                 message,
+                httpRequest.getRequestURI()
         );
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        return ResponseEntity.status(status).body(errorResponse);
+    }
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(
+            HttpStatus status,
+            String message,
+            HttpServletRequest httpRequest,
+            Map<String, String> errors
+                                                              ){
+        ErrorResponse errorResponse = new ErrorResponse(
+                status.value(),
+                status.getReasonPhrase(),
+                 message,
+                httpRequest.getRequestURI(),
+                errors
+        );
+
+        return ResponseEntity.status(status).body(errorResponse);
     }
 }

@@ -1,11 +1,10 @@
 package com.markethub.api.listing.domain;
 
-public class ListingNotFound extends RuntimeException {
-    public ListingNotFound(String message) {
-        super(message);
-    }
+import com.markethub.api.exception.ResourceNotFoundException;
 
-    public ListingNotFound(Long id){
-        super("Listing not found with id: " + id);
+public class ListingNotFound extends ResourceNotFoundException {
+
+    public ListingNotFound(Long id) {
+        super("Listing", id);
     }
 }

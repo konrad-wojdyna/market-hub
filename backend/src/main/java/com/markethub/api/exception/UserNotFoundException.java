@@ -1,11 +1,8 @@
 package com.markethub.api.exception;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
-        super(message);
-    }
+public class UserNotFoundException extends ResourceNotFoundException {
 
-    public UserNotFoundException(Long userId){
-        super("User with id " + userId + " not found");
+    public UserNotFoundException(Long id) {
+        super("User", id);
     }
 }
