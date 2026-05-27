@@ -21,5 +21,5 @@ export const useCreateListing = () => {
     }
   };
 
-  return { createListing, navigate };
+  return { createListing };
 };

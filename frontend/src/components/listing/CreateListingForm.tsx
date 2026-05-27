@@ -4,9 +4,11 @@ import { useCreateListing } from "../../hooks/useCreateListing";
 import { useCategories } from "../../hooks/useCategories";
 import Loading from "../shared/LoadingComponent";
 import { ErrorComponent } from "..";
+import { useNavigate } from "react-router-dom";
 
 const CreateListingForm = () => {
-  const { createListing, navigate } = useCreateListing();
+  const navigate = useNavigate();
+  const { createListing } = useCreateListing();
   const { categories, error, isLoading } = useCategories(true);
 
   const {
@@ -17,8 +19,12 @@ const CreateListingForm = () => {
   } = useForm<CreateListingData>();
 
   const onSubmit: SubmitHandler<CreateListingData> = async (data) => {
-    await createListing(data);
-    reset();
+    try {
+      await createListing(data);
+      reset();
+    } catch {
+      //error handled in useCreateListing (toast)
+    }
   };
 
   if (isLoading) {
@@ -68,7 +74,7 @@ const CreateListingForm = () => {
             className="border border-gray-300 p-2 rounded-lg"
           ></textarea>
           <small className="text-gray-600">
-            Optional - but lisitngs with descriptions sell faster!
+            Optional - but listings with descriptions sell faster!
           </small>
         </div>
         <div className="flex flex-col gap-2">
@@ -99,7 +105,11 @@ const CreateListingForm = () => {
             id="category"
             defaultValue=""
             required
-            {...register("categoryId", { valueAsNumber: true })}
+            {...register("categoryId", {
+              valueAsNumber: true,
+              required: "Category is required",
+              validate: (value) => value > 0 || "Category is required",
+            })}
             className="border border-gray-300 p-2 rounded-lg"
           >
             <option value="" disabled hidden>
