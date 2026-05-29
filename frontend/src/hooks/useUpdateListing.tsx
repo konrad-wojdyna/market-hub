@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import listingService from "../services/listingService";
-import type { UseFormReset } from "react-hook-form";
-import type {
-  CreateListingData,
-  Listing,
-  UpdateListingData,
-} from "../types/listing";
-import { useNavigate } from "react-router-dom";
+import type { Listing, UpdateListingData } from "../types/listing";
 
 export const useUpdateListing = (id: number) => {
-  const navigate = useNavigate();
   const [initialData, setInitialData] = useState<Listing | null>(null);
 
   useEffect(() => {
@@ -24,6 +17,7 @@ export const useUpdateListing = (id: number) => {
             ? error.message
             : "Something went wrong. Pleasy try again!";
         toast.error(errorMsg);
+        throw error;
       }
     };
 
@@ -34,7 +28,6 @@ export const useUpdateListing = (id: number) => {
     try {
       await listingService.updateListing(id, data);
       toast.success("Listing updated!");
-      navigate(`/listings/${id}`);
     } catch (error) {
       const errorMsg =
         error instanceof Error
@@ -44,5 +37,5 @@ export const useUpdateListing = (id: number) => {
     }
   };
 
-  return { updateListing, navigate, initialData };
+  return { updateListing, initialData };
 };

@@ -7,10 +7,13 @@ import { useEffect } from "react";
 import { useCategories } from "../../hooks/useCategories";
 import Loading from "../shared/LoadingComponent";
 import { ErrorComponent } from "..";
+import FormField from "./FormField";
+import { useNavigate } from "react-router-dom";
 
 const EditListingForm = () => {
   const { id } = useParams();
   const { categories, error, isLoading } = useCategories(true);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -19,10 +22,15 @@ const EditListingForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<UpdateListingData>();
 
-  const { updateListing, navigate, initialData } = useUpdateListing(Number(id));
+  const { updateListing, initialData } = useUpdateListing(Number(id));
 
   const onSubmit: SubmitHandler<UpdateListingData> = async (data) => {
-    await updateListing(data);
+    try {
+      await updateListing(data);
+      navigate(`/listings/${id}`);
+    } catch {
+      //error handled in useUpdateListing (toast)
+    }
   };
 
   useEffect(() => {
@@ -43,10 +51,7 @@ const EditListingForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-5 p-4 m-4 w-full max-w-225 shadow-lg rounded-md border border-gray-200"
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="title" className="font-bold tracking-wide">
-            Title *
-          </label>
+        <FormField label="Title *" errors={errors} name="title">
           <input
             type="text"
             id="title"
@@ -59,14 +64,8 @@ const EditListingForm = () => {
             aria-invalid={errors.title ? "true" : "false"}
             className="border border-gray-300 p-2 rounded-lg"
           />
-          {errors.title && (
-            <p className="text-sm text-red-600">{errors.title.message}</p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="font-bold tracking-wide">
-            Description{" "}
-          </label>
+        </FormField>
+        <FormField label="Description" errors={errors} name="description">
           <textarea
             id="description"
             rows={6}
@@ -78,11 +77,8 @@ const EditListingForm = () => {
           <small className="text-gray-600">
             Optional - but listings with descriptions sell faster!
           </small>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="price" className="font-bold tracking-wide">
-            Price (PLN) *
-          </label>
+        </FormField>
+        <FormField label="Price (PLN)" errors={errors} name="price">
           <input
             type="number"
             id="price"
@@ -95,19 +91,17 @@ const EditListingForm = () => {
             })}
             className="border border-gray-300 p-2 rounded-lg"
           />
-          {errors.price && (
-            <p className="text-sm text-red-600">{errors.price.message}</p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="category" className="font-bold tracking-wide">
-            Category *
-          </label>
+        </FormField>
+        <FormField label="Category *" errors={errors} name="categoryId">
           <select
             id="category"
             defaultValue=""
             required
-            {...register("categoryId", { valueAsNumber: true })}
+            {...register("categoryId", {
+              valueAsNumber: true,
+              required: "Category is required",
+              validate: (value) => value > 0 || "Category is required",
+            })}
             className="border border-gray-300 p-2 rounded-lg"
           >
             <option value="" disabled hidden>
@@ -121,11 +115,8 @@ const EditListingForm = () => {
               );
             })}
           </select>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="location" className="font-bold tracking-wide">
-            Location
-          </label>
+        </FormField>
+        <FormField label="Location" errors={errors} name="location">
           <input
             type="text"
             id="location"
@@ -136,7 +127,7 @@ const EditListingForm = () => {
           <small className="text-gray-600">
             Optional - helps buyers find local items
           </small>
-        </div>
+        </FormField>
         <div className="flex justify-between p-2">
           <button
             type="button"
