@@ -1,4 +1,3 @@
-import type { CreateListingData } from "../../types/listing";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useCreateListing } from "../../hooks/useCreateListing";
 import { useCategories } from "../../hooks/useCategories";
@@ -6,6 +5,11 @@ import Loading from "../shared/LoadingComponent";
 import { ErrorComponent } from "..";
 import FormField from "./FormField";
 import { useNavigate } from "react-router-dom";
+import {
+  listingSchema,
+  type ListingFormData,
+} from "../../schemas/listingSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const CreateListingForm = () => {
   const navigate = useNavigate();
@@ -17,9 +21,11 @@ const CreateListingForm = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<CreateListingData>();
+  } = useForm<ListingFormData>({
+    resolver: zodResolver(listingSchema),
+  });
 
-  const onSubmit: SubmitHandler<CreateListingData> = async (data) => {
+  const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
     try {
       await createListing(data);
       reset();
@@ -47,11 +53,7 @@ const CreateListingForm = () => {
             type="text"
             id="title"
             placeholder="e.g., iPhone 13 Pro - Like New"
-            {...register("title", {
-              required: "Title is required",
-              minLength: { value: 3, message: "Min 3 characters" },
-              maxLength: { value: 50, message: "Max 50 characters" },
-            })}
+            {...register("title")}
             aria-invalid={errors.title ? "true" : "false"}
             className="border border-gray-300 p-2 rounded-lg"
           />
@@ -76,10 +78,7 @@ const CreateListingForm = () => {
             step="0.01"
             required
             placeholder="0.00"
-            {...register("price", {
-              required: "Price is required",
-              min: { value: 0.01, message: "Price must be positive" },
-            })}
+            {...register("price", { valueAsNumber: true })}
             className="border border-gray-300 p-2 rounded-lg"
           />
         </FormField>
@@ -88,11 +87,7 @@ const CreateListingForm = () => {
             id="category"
             defaultValue=""
             required
-            {...register("categoryId", {
-              valueAsNumber: true,
-              required: "Category is required",
-              validate: (value) => value > 0 || "Category is required",
-            })}
+            {...register("categoryId", { valueAsNumber: true })}
             className="border border-gray-300 p-2 rounded-lg"
           >
             <option value="" disabled hidden>

@@ -10,22 +10,6 @@ export interface Listing {
   ownerId: number;
 }
 
-export interface CreateListingData {
-  title: string;
-  description?: string;
-  price: number;
-  categoryId: number;
-  location?: string;
-}
-
-export interface UpdateListingData {
-  title: string;
-  description?: string;
-  price: number;
-  categoryId: number;
-  location?: string;
-}
-
 export interface ListingSearchParams {
   title?: string;
   minPrice?: number;
