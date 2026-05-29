@@ -9,5 +9,6 @@ public record ListingSearchParams(
         @PositiveOrZero BigDecimal minPrice,
         @PositiveOrZero BigDecimal maxPrice,
         Long categoryId,
-        String location
+        String location,
+        Long ownerId
 ) {}

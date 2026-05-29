@@ -29,7 +29,8 @@ public class ListingAdapter implements ListingPort {
                 .hasTitle(params.title())
                 .and(ListingSpecification.hasLocation(params.location()))
                 .and(ListingSpecification.hasPriceBetween(params.minPrice(), params.maxPrice()))
-                .and(ListingSpecification.hasCategory(params.categoryId()));
+                .and(ListingSpecification.hasCategory(params.categoryId()))
+                .and(ListingSpecification.hasOwnerId(params.ownerId()));
 
         return jpaListingRepository.findAll(spec, pageable);
     }

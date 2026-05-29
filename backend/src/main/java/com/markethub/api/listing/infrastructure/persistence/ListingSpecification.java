@@ -31,4 +31,9 @@ public class ListingSpecification {
                 location.isBlank()) ?
                 cb.conjunction() : cb.like(cb.lower(root.get("location")), "%" + location.toLowerCase() + "%");
     }
+
+    public static Specification<Listing> hasOwnerId(Long ownerId){
+        return (root, query, cb) -> ownerId == null ?
+                cb.conjunction() : cb.equal(root.get("user").get("id"), ownerId);
+    }
 }
