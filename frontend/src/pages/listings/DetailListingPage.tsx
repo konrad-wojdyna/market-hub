@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DeleteModal, Navbar } from "../../components";
 import no_image from "../../assets/no-picture.png";
 import { MapPin, TimerIcon } from "lucide-react";
@@ -11,6 +12,7 @@ const DetailListingPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
   const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const { data, error, isLoading } = useListingDetail(Number(id));
 
@@ -103,7 +105,10 @@ const DetailListingPage = () => {
                 <DeleteModal
                   isOpen={isDeleteModalOpen}
                   onClose={() => setIsDeleteModalOpen(false)}
-                  onConfirm={() => handleDelete(Number(id))}
+                  onConfirm={async () => {
+                    await handleDelete(Number(id));
+                    navigate("/listings");
+                  }}
                   title={data?.title || ""}
                 />
               </div>

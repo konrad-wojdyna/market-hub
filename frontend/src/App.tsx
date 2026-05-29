@@ -12,6 +12,7 @@ import {
   ProtectedRoute,
   AdminPage,
   AdminRoute,
+  MyListingsPage,
 } from "./pages";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/listings/new" element={<CreateListingPage />} />
+          <Route path="/listings/my-listings" element={<MyListingsPage />} />
           <Route path="/listings/:id" element={<DetailListingPage />} />
           <Route path="/listings/:id/edit" element={<EditListingPage />} />
           <Route path="/messages" element={<MessagesPage />} />

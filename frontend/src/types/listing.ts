@@ -19,4 +19,5 @@ export interface ListingSearchParams {
   sort?: string;
   page?: number;
   size?: number;
+  ownerId?: number;
 }
