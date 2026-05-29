@@ -4,25 +4,22 @@ import no_image from "../../assets/no-picture.png";
 import { MapPin, TimerIcon } from "lucide-react";
 import { useState } from "react";
 import { useDeleteListing } from "../../hooks/useDeleteListing";
-import { useAsync } from "../../hooks/useAsync";
-import listingService from "../../services/listingService";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useListingDetail } from "../../hooks/useListingDetail";
 
 const DetailListingPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { id } = useParams();
   const { user } = useAuthContext();
 
-  const { data, error, isLoading } = useAsync({
-    service: () => listingService.getListingById(Number(id)),
-    dependencies: [id],
-  });
-  const { handleDelete } = useDeleteListing(Number(id));
+  const { data, error, isLoading } = useListingDetail(Number(id));
+
+  const { handleDelete } = useDeleteListing();
 
   return (
     <section>
       <Navbar />
-      {error && <div>{error}</div>}
+      {error && <div>{error?.message}</div>}
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -106,7 +103,7 @@ const DetailListingPage = () => {
                 <DeleteModal
                   isOpen={isDeleteModalOpen}
                   onClose={() => setIsDeleteModalOpen(false)}
-                  onConfirm={handleDelete}
+                  onConfirm={() => handleDelete(Number(id))}
                   title={data?.title || ""}
                 />
               </div>

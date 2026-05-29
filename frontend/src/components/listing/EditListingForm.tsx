@@ -13,6 +13,7 @@ import {
   listingSchema,
   type ListingFormData,
 } from "../../schemas/listingSchema";
+import { useListingDetail } from "../../hooks/useListingDetail";
 
 const EditListingForm = () => {
   const { id } = useParams();
@@ -28,14 +29,15 @@ const EditListingForm = () => {
     resolver: zodResolver(listingSchema),
   });
 
-  const { updateListing, initialData } = useUpdateListing(Number(id));
+  const { data: initialData } = useListingDetail(Number(id));
+  const { updateListing } = useUpdateListing();
 
   const onSubmit: SubmitHandler<ListingFormData> = async (data) => {
     try {
-      await updateListing(data);
+      await updateListing({ id: Number(id), data });
       navigate(`/listings/${id}`);
     } catch {
-      //error handled in useUpdateListing (toast)
+      // error handled in useUpdateListing (onError)
     }
   };
 

@@ -1,14 +1,18 @@
 import categoryService from "../services/categoryService";
-import { useAsync } from "./useAsync";
+import { useQuery } from "@tanstack/react-query";
 
 export const useCategories = (onlyActive: boolean) => {
-  const { data, isLoading, error } = useAsync({
-    service: () =>
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () =>
       onlyActive
         ? categoryService.getActiveCategories()
         : categoryService.getAllCategories(),
-    dependencies: [onlyActive],
   });
 
-  return { categories: data ?? [], isLoading, error };
+  return {
+    categories: data ?? [],
+    isLoading,
+    error,
+  };
 };

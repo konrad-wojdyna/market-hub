@@ -30,7 +30,7 @@ const CreateListingForm = () => {
       await createListing(data);
       reset();
     } catch {
-      //error handled in useCreateListing (toast)
+      // error handled in useCreateListing (onError)
     }
   };
 

@@ -1,21 +1,25 @@
 import { toast } from "react-toastify";
 import listingService from "../services/listingService";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
-export const useDeleteListing = (id: number) => {
+export const useDeleteListing = () => {
   const navigate = useNavigate();
 
-  const handleDelete = async () => {
-    try {
-      await listingService.deleteListing(id);
+  const mutation = useMutation({
+    mutationFn: (id: number) => listingService.deleteListing(id),
+    onSuccess: () => {
       toast.success("Deleted successfully");
       navigate("/listings");
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error ? error.message : "Failed to delete";
-      toast.error(errorMsg);
-    }
-  };
+    },
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
 
-  return { handleDelete };
+  return {
+    handleDelete: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+    error: mutation.error,
+  };
 };

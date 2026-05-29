@@ -1,9 +1,5 @@
-import type {
-  Listing,
-  CreateListingData,
-  UpdateListingData,
-  ListingSearchParams,
-} from "../types/listing";
+import type { ListingFormData } from "../schemas/listingSchema";
+import type { Listing, ListingSearchParams } from "../types/listing";
 import type { Page } from "../types/page";
 import { api } from "./api";
 
@@ -22,12 +18,12 @@ class ListingService {
     return response.data;
   }
 
-  async createListing(data: CreateListingData): Promise<Listing> {
+  async createListing(data: ListingFormData): Promise<Listing> {
     const response = await api.post<Listing>(`/listings`, data);
     return response.data;
   }
 
-  async updateListing(id: number, data: UpdateListingData): Promise<Listing> {
+  async updateListing(id: number, data: ListingFormData): Promise<Listing> {
     const response = await api.put<Listing>(`/listings/${id}`, data);
     return response.data;
   }

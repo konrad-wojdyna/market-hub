@@ -1,25 +1,26 @@
 import { toast } from "react-toastify";
 import listingService from "../services/listingService";
 import { useNavigate } from "react-router-dom";
-import type { CreateListingData } from "../types/listing";
+import { useMutation } from "@tanstack/react-query";
+import type { ListingFormData } from "../schemas/listingSchema";
 
 export const useCreateListing = () => {
   const navigate = useNavigate();
 
-  const createListing = async (data: CreateListingData) => {
-    try {
-      await listingService.createListing(data);
+  const mutation = useMutation({
+    mutationFn: (data: ListingFormData) => listingService.createListing(data),
+    onSuccess: () => {
       toast.success("Listing created!");
       navigate("/listings");
-    } catch (error) {
-      const errorMsg =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again!";
-      toast.error(errorMsg);
-      throw error;
-    }
-  };
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
-  return { createListing };
+  return {
+    createListing: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+    error: mutation.error,
+  };
 };
