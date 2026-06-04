@@ -20,10 +20,10 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentInfo(
-            @AuthenticationPrincipal UserPrincipal principal
+            @AuthenticationPrincipal UserPrincipal userPrincipal
             ){
 
-        UserResponse response = userService.getCurrentUser(principal.id());
+        UserResponse response = userService.getCurrentUser(userPrincipal.id());
         return ResponseEntity.ok(response);
     }
 }
