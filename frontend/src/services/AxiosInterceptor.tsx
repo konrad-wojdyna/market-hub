@@ -9,17 +9,6 @@ const AxiosInterceptor = ({ children }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const requestInterceptor = api.interceptors.request.use(
-      (config) => {
-        const token = localStorage.getItem(AUTH_TOKEN);
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error),
-    );
-
     const responseInterceptor = api.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -32,10 +21,7 @@ const AxiosInterceptor = ({ children }: Props) => {
       },
     );
 
-    return () => {
-      api.interceptors.request.eject(requestInterceptor);
-      api.interceptors.response.eject(responseInterceptor);
-    };
+    return () => api.interceptors.response.eject(responseInterceptor);
   }, [navigate]);
 
   return children;
