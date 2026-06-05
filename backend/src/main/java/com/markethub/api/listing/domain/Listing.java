@@ -1,6 +1,7 @@
 package com.markethub.api.listing.domain;
 
 import com.markethub.api.entity.Category;
+import com.markethub.api.entity.ListingImage;
 import com.markethub.api.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "listings")
@@ -48,4 +51,7 @@ public class Listing {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ListingImage> images = new ArrayList<>();
 }

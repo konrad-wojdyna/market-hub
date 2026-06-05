@@ -19,7 +19,8 @@ public class ListingMapper {
                 listing.getCategory().getName(),
                 listing.getLocation(),
                 listing.getCreatedAt(),
-                listing.getUser().getId()
+                listing.getUser().getId(),
+                listing.getImages()
         );
     }
 

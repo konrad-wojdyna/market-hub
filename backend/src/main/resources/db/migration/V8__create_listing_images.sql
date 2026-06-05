@@ -1,0 +1,12 @@
+
+
+CREATE TABLE listing_images (
+    id BIGSERIAL PRIMARY KEY,
+    url VARCHAR(500) NOT NULL,
+    cloudinary_public_id VARCHAR(255) NOT NULL,
+    is_main BOOLEAN NOT NULL DEFAULT FALSE,
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    listing_id BIGINT NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+);

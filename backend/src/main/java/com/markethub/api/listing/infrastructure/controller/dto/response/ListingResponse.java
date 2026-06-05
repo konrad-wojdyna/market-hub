@@ -1,7 +1,11 @@
 package com.markethub.api.listing.infrastructure.controller.dto.response;
 
+import com.markethub.api.dto.response.ListingImageResponse;
+import com.markethub.api.entity.ListingImage;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ListingResponse(
         Long id,
@@ -12,5 +16,6 @@ public record ListingResponse(
         String category,
         String location,
         LocalDateTime createdAt,
-        Long ownerId
+        Long ownerId,
+        List<ListingImage> images
 ) {}

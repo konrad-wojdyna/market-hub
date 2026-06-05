@@ -1,0 +1,23 @@
+
+
+
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255),
+    phone VARCHAR(255),
+    role VARCHAR(255) NOT NULL DEFAULT 'USER',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+DELETE FROM listings;
+
+ALTER TABLE listings
+DROP CONSTRAINT IF EXISTS fk_listings_user;
+
+ALTER TABLE listings
+ADD CONSTRAINT fk_listings_user
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;

@@ -29,6 +29,14 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", request, errors);
     }
 
+    @ExceptionHandler(MaxImagesReachedException.class)
+    public ResponseEntity<ErrorResponse> handleMaxImagesReached(
+            MaxImagesReachedException ex,
+            HttpServletRequest request){
+
+                return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(
             InvalidCredentialsException ex,
