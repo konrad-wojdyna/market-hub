@@ -6,6 +6,7 @@ import com.markethub.api.listing.domain.Listing;
 import com.markethub.api.listing.infrastructure.controller.dto.request.CreateListingRequest;
 import com.markethub.api.listing.infrastructure.controller.dto.request.UpdateListingRequest;
 import com.markethub.api.listing.infrastructure.controller.dto.response.ListingResponse;
+import com.markethub.api.mapper.ListingImageMapper;
 
 public class ListingMapper {
 
@@ -20,7 +21,9 @@ public class ListingMapper {
                 listing.getLocation(),
                 listing.getCreatedAt(),
                 listing.getUser().getId(),
-                listing.getImages()
+                listing.getImages().stream()
+                        .map(ListingImageMapper::toResponse)
+                        .toList()
         );
     }
 
