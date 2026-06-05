@@ -37,6 +37,22 @@ public class GlobalExceptionHandler {
                 return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
+    @ExceptionHandler(InvalidFileTypeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFileType(
+            InvalidFileTypeException ex,
+            HttpServletRequest request
+    ){
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(FileTooLargeException.class)
+    public ResponseEntity<ErrorResponse> handleFileTooLarge(
+            FileTooLargeException ex,
+            HttpServletRequest request
+    ){
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(
             InvalidCredentialsException ex,

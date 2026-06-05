@@ -4,9 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.markethub.api.dto.response.ListingImageResponse;
 import com.markethub.api.entity.ListingImage;
-import com.markethub.api.exception.MaxImagesReachedException;
-import com.markethub.api.exception.ResourceNotFoundException;
-import com.markethub.api.exception.UnauthorizedAccessException;
+import com.markethub.api.exception.*;
 import com.markethub.api.listing.application.ports.ListingPort;
 import com.markethub.api.listing.domain.Listing;
 import com.markethub.api.listing.domain.ListingNotFound;
@@ -40,6 +38,15 @@ public class ListingImageService {
 
         if(listing.getImages().size() >= 5){
             throw new MaxImagesReachedException();
+        }
+
+        if(file.getContentType() == null || !file.getContentType().startsWith("image/")){
+            throw new InvalidFileTypeException();
+        }
+
+        //5MB
+        if(file.getSize() > 5 * 1024 * 1024){
+             throw new FileTooLargeException();
         }
 
         boolean isMain = listing.getImages().isEmpty();
