@@ -10,15 +10,23 @@ const ListingCard = ({
   category,
   location,
   createdAt,
+  images,
 }: Listing) => {
   const navigate = useNavigate();
+
+  const mainImage =
+    images?.find((img) => img.isMain)?.url ?? images?.[0]?.url ?? no_image;
 
   return (
     <article
       className="bg-white shadow-md rounded-md cursor-pointer"
       onClick={() => navigate(`/listings/${id}`)}
     >
-      <img src={no_image} alt={title} className="w-full h-50 object-cover " />
+      <img
+        src={mainImage}
+        alt={title}
+        className="m-auto w-60 h-48 object-fit "
+      />
       <main className="flex flex-col gap-2 p-4">
         <h2 className="max-w-22 p-1 rounded-lg text-sm tracking-wider font-bold bg-blue-400 text-blue-800">
           {category}

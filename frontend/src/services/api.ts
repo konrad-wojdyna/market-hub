@@ -3,9 +3,6 @@ import { AUTH_TOKEN } from "../constants/auth";
 
 export const api = axios.create({
   baseURL: "http://localhost:8080/api/v1",
-  headers: {
-    "Content-Type": "application/json",
-  },
   timeout: 10000,
 });
 
@@ -15,6 +12,11 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (!(config.data instanceof FormData)) {
+      config.headers["Content-Type"] = "application/json";
+    }
+
     return config;
   },
   (error) => Promise.reject(error),

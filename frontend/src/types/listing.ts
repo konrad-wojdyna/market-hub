@@ -1,3 +1,5 @@
+import type { ListingImage } from "./listingImage";
+
 export interface Listing {
   id: number;
   title: string;
@@ -8,6 +10,7 @@ export interface Listing {
   location: string;
   createdAt: string;
   ownerId: number;
+  images: ListingImage[];
 }
 
 export interface ListingSearchParams {

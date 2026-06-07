@@ -14,6 +14,9 @@ export { default as EditListingForm } from "./listing/EditListingForm";
 export { default as SearchFilters } from "./listing/SearchFilters";
 export { default as Pagination } from "./listing/Pagination";
 
+//Listing Images
+export { default as ImageGallery } from "./listingImages/ImageGallery";
+
 //Messages
 export { default as ConversationList } from "./messages/ConversationList";
 export { default as ChatWindow } from "./messages/ChatWindow";
