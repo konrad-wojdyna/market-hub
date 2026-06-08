@@ -21,6 +21,12 @@ spring.flyway.locations=classpath:db/migration
 jwt.secret=your-256-bit-secret-key-base64-encoded-here
 jwt.expiration=86400000
 
+#RabbitMQ
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
 #Cloudinary Configuration
 cloudinary.cloud-name=your_cloud_name_here
 cloudinary.api-key=your_api_key_here
