@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/v1/listings/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/listings/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/{id}/profile").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
