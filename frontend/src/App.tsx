@@ -13,6 +13,7 @@ import {
   AdminPage,
   AdminRoute,
   MyListingsPage,
+  UserProfilePage,
 } from "./pages";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route index element={<ListingPage />} />
+        <Route path="/users/:id/profile" element={<UserProfilePage />} />
         <Route element={<AdminRoute />}>
           <Route path="/admin" element={<AdminPage />} />
         </Route>

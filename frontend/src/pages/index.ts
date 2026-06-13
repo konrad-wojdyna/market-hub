@@ -9,6 +9,9 @@ export { default as EditListingPage } from "./listings/EditListingPage";
 export { default as DetailListingPage } from "./listings/DetailListingPage";
 export { default as MyListingsPage } from "./listings/MyListingsPage";
 
+//Users
+export { default as UserProfilePage } from "./users/UserProfilePage";
+
 //Messages
 export { default as MessagesPage } from "./MessagesPage";
 
