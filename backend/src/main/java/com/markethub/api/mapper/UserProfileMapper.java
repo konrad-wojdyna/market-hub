@@ -9,6 +9,8 @@ public class UserProfileMapper {
     public static UserProfileResponse toResponse(UserProfile userProfile){
         return new UserProfileResponse(
                 userProfile.getId(),
+                userProfile.getUser().getFirstName(),
+                userProfile.getUser().getLastName(),
                 userProfile.getAvatarUrl(),
                 userProfile.getBio(),
                 userProfile.getCity(),
