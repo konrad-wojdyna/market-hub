@@ -1,9 +1,10 @@
-import type { CreateUserProfile, UserProfile } from "../types/userProfile";
+import type { UserProfile } from "../types/userProfile";
+import type { UserProfileFormData } from "../schemas/userProfileSchema";
 import { api } from "./api";
 
 class UserProfileService {
   async createOrUpdateUserProfile(
-    data: CreateUserProfile,
+    data: UserProfileFormData,
   ): Promise<UserProfile> {
     const response = await api.put("/users/profile", data);
     return response.data;
