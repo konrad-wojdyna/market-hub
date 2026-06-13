@@ -8,9 +8,3 @@ export interface UserProfile {
   joinedAt: string;
   updatedAt: string;
 }
-
-export interface CreateUserProfile {
-  avatarUrl: string;
-  bio: string;
-  city: string;
-}
