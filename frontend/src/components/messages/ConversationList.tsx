@@ -17,7 +17,7 @@ const ConversationList = ({
   }
 
   if (error) {
-    return <ErrorComponent message={error} />;
+    return <ErrorComponent message={error.message} />;
   }
 
   return (
@@ -35,19 +35,21 @@ const ConversationList = ({
         {conversations?.map((conversation) => {
           const {
             id,
-            lastMessageAt,
-            otherUserFirstName,
-            otherUserLastName,
+            firstName,
+            receiverId,
+            avatar,
             listingTitle,
+            lastMessageContent,
+            lastMessageAt,
           } = conversation;
           return (
             <ConversationItem
               key={id}
               conversationId={id}
-              initials={`${otherUserFirstName[0]}${otherUserLastName[0]}`.toUpperCase()}
-              name={otherUserFirstName}
+              initials={`${firstName[0]}`.toUpperCase()}
+              name={firstName}
               listingTitle={listingTitle}
-              lastMessage=""
+              lastMessage={lastMessageContent}
               timeAgo={lastMessageAt}
             />
           );

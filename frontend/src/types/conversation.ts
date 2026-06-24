@@ -3,6 +3,8 @@ export interface Conversation {
   receiverId: number;
   firstName: string;
   avatar: string;
+  listingTitle: string;
+  lastMessageContent: string;
   lastMessageAt: string;
 }
 
