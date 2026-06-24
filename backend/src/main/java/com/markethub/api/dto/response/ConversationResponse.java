@@ -7,5 +7,6 @@ public record ConversationResponse(
         Long receiverId,
         String firstName,
         String avatar,
+        String listingTitle,
         LocalDateTime lastMessageAt
 ) {}
