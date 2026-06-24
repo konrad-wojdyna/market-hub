@@ -3,7 +3,7 @@ import { api } from "./api";
 
 class MessageService {
   async getMessages(conversationId: number): Promise<Message[]> {
-    const response = await api.get(`/messages/${conversationId}`);
+    const response = await api.get(`/conversations/${conversationId}/messages`);
     return response.data;
   }
 
