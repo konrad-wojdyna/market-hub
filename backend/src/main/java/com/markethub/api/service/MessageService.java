@@ -11,6 +11,7 @@ import com.markethub.api.exception.UnauthorizedAccessException;
 import com.markethub.api.mapper.MessageMapper;
 import com.markethub.api.repository.ConversationRepository;
 import com.markethub.api.repository.MessageRepository;
+import com.markethub.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +25,17 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public MessageResponse sendMessage(
             SendMessageRequest request,
-            User currentUser
+            Long currentUserId
     ){
         Conversation conversation = conversationRepository.findById(request.conversationId())
                 .orElseThrow(() -> new ResourceNotFoundException("conversation", request.conversationId()));
+
+        User currentUser = userRepository.getReferenceById(currentUserId);
 
         if(!(conversation.getSender().getId().equals(currentUser.getId())
                 || conversation.getReceiver().getId().equals(currentUser.getId()))){
@@ -52,5 +56,4 @@ public class MessageService {
         List<Message> messages = messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
         return messages.stream().map(MessageMapper::toResponse).toList();
     }
-
 }
