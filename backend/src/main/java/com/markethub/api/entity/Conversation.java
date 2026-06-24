@@ -34,6 +34,9 @@ public class Conversation {
     @JoinColumn(name = "listing_id", nullable = false)
     private Listing listing;
 
+    @Column(name = "last_message_content")
+    private String lastMessageContent;
+
     @Column(name = "last_message_at")
     private LocalDateTime lastMessageAt;
 

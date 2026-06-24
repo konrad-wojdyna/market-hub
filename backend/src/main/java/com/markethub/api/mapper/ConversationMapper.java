@@ -25,6 +25,7 @@ public class ConversationMapper {
                 otherUser.getFirstName(),
                 avatarUrl,
                 conversation.getListing().getTitle(),
+                conversation.getLastMessageContent(),
                 conversation.getLastMessageAt()
         );
     }

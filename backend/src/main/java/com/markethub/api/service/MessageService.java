@@ -45,6 +45,7 @@ public class MessageService {
         Message newMessage = MessageMapper.toEntity(conversation, currentUser, request.content());
         Message savedMessage = messageRepository.save(newMessage);
         conversation.setLastMessageAt(LocalDateTime.now());
+        conversation.setLastMessageContent(newMessage.getContent());
 
         return MessageMapper.toResponse(savedMessage);
     }

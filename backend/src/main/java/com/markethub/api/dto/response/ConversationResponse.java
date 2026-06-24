@@ -8,5 +8,6 @@ public record ConversationResponse(
         String firstName,
         String avatar,
         String listingTitle,
+        String lastMessageContent,
         LocalDateTime lastMessageAt
 ) {}
