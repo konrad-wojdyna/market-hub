@@ -42,7 +42,6 @@ public class ConversationService {
 
 
          return ConversationMapper.toResponse(conversation, currentUserId);
-
     }
 
     @Transactional(readOnly = true)
@@ -51,5 +50,4 @@ public class ConversationService {
         List<Conversation> conversations = conversationRepository.findAllByUserId(currentUserId);
         return conversations.stream().map(conv -> ConversationMapper.toResponse(conv, currentUserId)).toList();
     }
-
 }
