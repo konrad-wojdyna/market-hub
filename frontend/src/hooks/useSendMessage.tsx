@@ -1,20 +1,18 @@
 import { toast } from "react-toastify";
 import messageService from "../services/messageService";
 import type { CreateMessageData } from "../types/message";
+import { useMutation } from "@tanstack/react-query";
 
 export const useSendMessage = () => {
-  const sendMessage = async (data: CreateMessageData) => {
-    try {
-      await messageService.sendMessage(data);
-    } catch (err) {
-      const errorMsg =
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again!";
-      toast.error(errorMsg);
-      throw err;
-    }
-  };
+  const mutation = useMutation({
+    mutationFn: (data: CreateMessageData) => messageService.sendMessage(data),
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
 
-  return { sendMessage };
+  return {
+    sendMessage: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+  };
 };

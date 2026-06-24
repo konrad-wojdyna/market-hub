@@ -1,11 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import conversationService from "../services/conversationService";
 
 export const useConversations = () => {
-  // TODO: refactor to React Query (useQuery) when returning to chat feature
-  // const { data, isLoading, error } = useAsync({
-  //   service: conversationService.getConversations,
-  // });
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: () => conversationService.getConversations(),
+  });
 
-  // return { conversations: data ?? [], isLoading, error };
-  return null;
+  return { conversations: data, isLoading, error };
 };

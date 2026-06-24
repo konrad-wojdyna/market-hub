@@ -1,21 +1,19 @@
 import { toast } from "react-toastify";
 import conversationService from "../services/conversationService";
 import type { CreateConversationData } from "../types/conversation";
+import { useMutation } from "@tanstack/react-query";
 
 export const useGetOrCreateConversation = () => {
-  const getOrCreateConversation = async (data: CreateConversationData) => {
-    try {
-      const response = await conversationService.getOrCreateConversation(data);
-      return response;
-    } catch (err) {
-      const errorMsg =
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again!";
-      toast.error(errorMsg);
-      throw err;
-    }
-  };
+  const mutation = useMutation({
+    mutationFn: (data: CreateConversationData) =>
+      conversationService.getOrCreateConversation(data),
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
 
-  return { getOrCreateConversation };
+  return {
+    getOrCreateConversation: mutation.mutateAsync,
+    isLoading: mutation.isPending,
+  };
 };
