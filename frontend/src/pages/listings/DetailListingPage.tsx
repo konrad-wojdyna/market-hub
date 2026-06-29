@@ -146,6 +146,27 @@ const DetailListingPage = () => {
                   </button>
                 </div>
               )}
+              {user && user?.id !== data?.ownerId && (
+                <div className="mt-auto pt-4 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!user) {
+                        navigate("/login");
+                        return;
+                      }
+
+                      navigate(
+                        `/messages?listingId=${data?.id}&sellerId=${data?.ownerId}`,
+                      );
+                    }}
+                    className="w-full px-4 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700
+        text-white font-medium transition-colors cursor-pointer text-sm"
+                  >
+                    Napisz do sprzedającego
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
