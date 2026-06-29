@@ -4,6 +4,10 @@ import NameInitials from "./NameInitials";
 import { useMessages } from "../../hooks/useMessages";
 import { ErrorComponent, Loading } from "..";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useWebSocket } from "../../hooks/useWebSocket";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
+import type { Message } from "../../types/message";
 
 type ChatWindowProps = {
   selectedConversationId: number | null;
@@ -18,9 +22,23 @@ const ChatWindow = ({
 }: ChatWindowProps) => {
   const conversationId = selectedConversationId || 0;
 
+  const queryClient = useQueryClient();
+
   const { user } = useAuthContext();
 
   const { messages, error, isLoading } = useMessages(conversationId);
+
+  const handleNewMessage = useCallback(
+    (message: Message) => {
+      queryClient.setQueryData(
+        ["messages", conversationId],
+        (old: Message[] | undefined) => [...(old ?? []), message],
+      );
+    },
+    [conversationId, queryClient],
+  );
+
+  const { connected } = useWebSocket(conversationId, handleNewMessage);
 
   if (conversationId === 0) {
     return <h1>Wybierz konwersację</h1>;
