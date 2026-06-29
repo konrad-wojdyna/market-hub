@@ -13,6 +13,7 @@ import com.markethub.api.repository.ConversationRepository;
 import com.markethub.api.repository.MessageRepository;
 import com.markethub.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional
     public MessageResponse sendMessage(
@@ -46,6 +48,9 @@ public class MessageService {
         Message savedMessage = messageRepository.save(newMessage);
         conversation.setLastMessageAt(LocalDateTime.now());
         conversation.setLastMessageContent(newMessage.getContent());
+
+        simpMessagingTemplate.convertAndSend("/topic/conversation." + conversation.getId(),
+                MessageMapper.toResponse(savedMessage));
 
         return MessageMapper.toResponse(savedMessage);
     }
