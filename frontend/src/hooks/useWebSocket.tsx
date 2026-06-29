@@ -2,6 +2,7 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { useEffect, useState } from "react";
 import type { Message } from "../types/message";
+import { AUTH_TOKEN } from "../constants/auth";
 
 export const useWebSocket = (
   conversationId: number | null,
@@ -12,12 +13,19 @@ export const useWebSocket = (
   useEffect(() => {
     if (!conversationId) return;
 
+    const token = localStorage.getItem(AUTH_TOKEN);
+
     const client = new Client({
       webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     client.onConnect = () => {
       setConnected(true);
+
+      console.log("Połączono ze STOMP!");
 
       client.subscribe(
         `/topic/conversation.${conversationId}`,
