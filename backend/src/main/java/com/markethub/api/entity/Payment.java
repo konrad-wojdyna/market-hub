@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,8 +36,8 @@ public class Payment {
     @Column(length = 3, nullable = false)
     private String currency;
 
-    @Column(name = "stripe_payment_intent_id", nullable = false, length = 255, unique = true)
-    private String stripePaymentIntentId;
+    @Column(name = "provider_payment_id", nullable = false, length = 255, unique = true)
+    private String providerPaymentId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)

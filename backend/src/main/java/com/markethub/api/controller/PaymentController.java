@@ -5,8 +5,7 @@ import com.markethub.api.dto.response.FeaturedDurationsResponse;
 import com.markethub.api.dto.response.PaymentResponse;
 import com.markethub.api.entity.FeaturedDuration;
 import com.markethub.api.security.userdetails.UserPrincipal;
-import com.markethub.api.service.PaymentService;
-import com.stripe.exception.StripeException;
+import com.markethub.api.service.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentResponse> initPayment(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestBody PaymentRequest request) throws StripeException {
+            @RequestBody PaymentRequest request) {
             PaymentResponse response = paymentService.createPayment(userPrincipal.id(), request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
