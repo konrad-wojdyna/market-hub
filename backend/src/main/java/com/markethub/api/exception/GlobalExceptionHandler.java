@@ -54,9 +54,9 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
-    @ExceptionHandler(StripeException.class)
-    public ResponseEntity<ErrorResponse> handleStripeException(
-            StripeException ex,
+    @ExceptionHandler(PaymentProcessingException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentProcessingException(
+            PaymentProcessingException ex,
             HttpServletRequest request
     ){
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Payment processing failed", request);
