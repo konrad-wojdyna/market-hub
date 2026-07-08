@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
-import no_image from "../../assets/no-picture.png";
 import type { Listing } from "../../types/listing";
 import { useNavigate } from "react-router-dom";
+import { getMainImage } from "../../utils/getMainImage";
 
 const ListingCard = ({
   id,
@@ -14,9 +14,7 @@ const ListingCard = ({
 }: Listing) => {
   const navigate = useNavigate();
 
-  const mainImage =
-    images?.find((img) => img.isMain)?.url ?? images?.[0]?.url ?? no_image;
-
+  const mainImage = getMainImage(images);
   return (
     <article
       className="bg-white shadow-md rounded-md cursor-pointer"
