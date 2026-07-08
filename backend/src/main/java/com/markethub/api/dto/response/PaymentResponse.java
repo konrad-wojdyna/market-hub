@@ -1,7 +1,9 @@
 package com.markethub.api.dto.response;
 
+import com.markethub.api.entity.PaymentStatus;
+
 public record PaymentResponse(
-        String stripePaymentIntentId,
+        String providerPaymentId,
         String clientSecret,
-        String status
+        PaymentStatus status
 ) {}

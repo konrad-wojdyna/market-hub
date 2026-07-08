@@ -24,7 +24,7 @@ public class PaymentMapper {
         return new PaymentResponse(
                 payment.getProviderPaymentId(),
                 clientSecret,
-                payment.getStatus().name()
+                payment.getStatus()
         );
     }
 
