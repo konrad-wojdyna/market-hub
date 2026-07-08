@@ -22,6 +22,9 @@ export { default as ImageGallery } from "./listingImages/ImageGallery";
 export { default as ConversationList } from "./messages/ConversationList";
 export { default as ChatWindow } from "./messages/ChatWindow";
 
+//Payments
+export { default as FeatureListingModal } from "./payment/FeatureListingModal";
+
 //Shared
 export { default as ErrorComponent } from "./shared/ErrorComponent";
 export { default as Loading } from "./shared/LoadingComponent";

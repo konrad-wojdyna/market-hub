@@ -1,12 +1,23 @@
-import { Plus } from "lucide-react";
-import { Navbar, CategoryCard, ListingList } from "../../components";
+import { Plus, Star } from "lucide-react";
+import {
+  Navbar,
+  CategoryCard,
+  ListingList,
+  FeatureListingModal,
+} from "../../components";
 import { useListings } from "../../hooks/useListings";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const MyListingsPage = () => {
   const { user } = useAuthContext();
   const { listings, isLoading, error } = useListings({ ownerId: user?.id });
+
+  const [isFeatureModalOpen, setIsFeatureModalOpen] = useState(false);
+
+  const openFeatureModal = () => setIsFeatureModalOpen(true);
+  const closeFeatureModal = () => setIsFeatureModalOpen(false);
 
   return (
     <section className="min-h-screen bg-gray-50">
@@ -19,15 +30,26 @@ const MyListingsPage = () => {
             </h1>
             <p className="text-sm text-gray-500">Manage your active listings</p>
           </div>
-          <Link
-            to="/listings/new"
-            className="flex items-center gap-2 px-4 py-2.5 bg-teal-600
-              hover:bg-teal-700 rounded-lg text-white text-sm font-medium
-              transition-colors"
-          >
-            <Plus size={16} />
-            Add Listing
-          </Link>
+          <div className="flex flex-col gap-2 md:flex-row">
+            <Link
+              to="/listings/new"
+              className="flex items-center gap-2 px-4 py-2.5 bg-teal-600
+            hover:bg-teal-700 rounded-lg text-white text-sm font-medium
+            transition-colors"
+            >
+              <Plus size={16} />
+              Add Listing
+            </Link>
+            <button
+              onClick={openFeatureModal}
+              className="flex items-center gap-2 px-4 py-2.5 border cursor-pointer bg-white
+            hover:bg-amber-300 rounded-lg text-black text-sm font-medium
+            transition-colors"
+            >
+              <Star size={16} />
+              Feature listing
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -67,6 +89,11 @@ const MyListingsPage = () => {
         )}
 
         <ListingList listings={listings?.content || []} isLoading={isLoading} />
+        <FeatureListingModal
+          isOpen={isFeatureModalOpen}
+          onClose={closeFeatureModal}
+          listings={listings?.content ?? []}
+        />
       </div>
     </section>
   );
