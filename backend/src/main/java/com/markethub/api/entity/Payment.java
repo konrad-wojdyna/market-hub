@@ -43,6 +43,10 @@ public class Payment {
     @Column(nullable = false, length = 50)
     private PaymentStatus status = PaymentStatus.PENDING;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "featured_duration", nullable = false, length = 50)
+    private FeaturedDuration featuredDuration;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
