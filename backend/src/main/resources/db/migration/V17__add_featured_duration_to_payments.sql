@@ -1,0 +1,5 @@
+
+
+
+ALTER TABLE payments
+ADD COLUMN featured_duration VARCHAR(50) NOT NULL DEFAULT 'SEVEN_DAYS';

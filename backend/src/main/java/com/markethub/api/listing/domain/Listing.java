@@ -48,6 +48,9 @@ public class Listing {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "featured_until")
+    private LocalDateTime featuredUntil;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

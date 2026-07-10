@@ -31,3 +31,7 @@ spring.rabbitmq.password=guest
 cloudinary.cloud-name=your_cloud_name_here
 cloudinary.api-key=your_api_key_here
 cloudinary.api-secret=your_api_secret_here
+
+#Stripe Configuration
+stripe.secret-key=your_stripe_secret_api_key_here
+stripe.webhook-secret=your_stripe_webhook_secret_here

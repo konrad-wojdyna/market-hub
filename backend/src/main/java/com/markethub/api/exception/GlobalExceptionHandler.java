@@ -3,6 +3,7 @@ package com.markethub.api.exception;
 
 import com.markethub.api.dto.response.ErrorResponse;
 import com.markethub.api.listing.domain.ListingNotFound;
+import com.stripe.exception.StripeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,14 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ){
         return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(PaymentProcessingException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentProcessingException(
+            PaymentProcessingException ex,
+            HttpServletRequest request
+    ){
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Payment processing failed", request);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
