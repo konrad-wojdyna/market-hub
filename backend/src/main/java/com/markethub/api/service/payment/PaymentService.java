@@ -52,7 +52,7 @@ public class PaymentService {
 
         PaymentResult result = strategy.processPayment(featuredDuration.getPrice(), request.currency());
 
-        Payment payment = PaymentMapper.toEntity(listing, user, featuredDuration.getPrice(), request, result);
+        Payment payment = PaymentMapper.toEntity(listing, user, featuredDuration.getPrice(), request, result, featuredDuration);
         paymentRepository.save(payment);
 
         return PaymentMapper.toResponse(payment, result.clientSecret());

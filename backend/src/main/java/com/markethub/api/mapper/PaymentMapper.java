@@ -2,6 +2,7 @@ package com.markethub.api.mapper;
 
 import com.markethub.api.dto.request.PaymentRequest;
 import com.markethub.api.dto.response.PaymentResponse;
+import com.markethub.api.entity.FeaturedDuration;
 import com.markethub.api.entity.Payment;
 import com.markethub.api.entity.User;
 import com.markethub.api.listing.domain.Listing;
@@ -9,7 +10,7 @@ import com.markethub.api.service.payment.PaymentResult;
 
 public class PaymentMapper {
 
-    public static Payment toEntity(Listing listing, User user, Long amount, PaymentRequest request, PaymentResult result) {
+    public static Payment toEntity(Listing listing, User user, Long amount, PaymentRequest request, PaymentResult result, FeaturedDuration featuredDuration) {
         return Payment.builder()
                 .listing(listing)
                 .user(user)
@@ -17,6 +18,7 @@ public class PaymentMapper {
                 .currency(request.currency())
                 .providerPaymentId(result.providerPaymentId())
                 .status(result.status())
+                .featuredDuration(featuredDuration)
                 .build();
     }
 
