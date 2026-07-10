@@ -41,7 +41,14 @@ public class PaymentService {
              throw new UnauthorizedAccessException();
          }
 
-        FeaturedDuration featuredDuration = FeaturedDuration.valueOf(request.duration());
+
+        FeaturedDuration featuredDuration;
+
+         try{
+             featuredDuration = FeaturedDuration.valueOf(request.duration());
+         }catch (IllegalArgumentException e){
+              throw new PaymentProcessingException("Invalid duration: " + request.duration(), e);
+         }
 
 
         PaymentStrategy strategy = paymentStrategies.get(request.paymentProvider());
