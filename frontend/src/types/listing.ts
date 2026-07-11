@@ -11,6 +11,7 @@ export interface Listing {
   createdAt: string;
   ownerId: number;
   images: ListingImage[];
+  isFeatured: boolean;
 }
 
 export interface ListingSearchParams {

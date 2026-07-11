@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import type { Listing } from "../../types/listing";
 import { useNavigate } from "react-router-dom";
 import { getMainImage } from "../../utils/getMainImage";
@@ -11,15 +11,26 @@ const ListingCard = ({
   location,
   createdAt,
   images,
+  isFeatured,
 }: Listing) => {
   const navigate = useNavigate();
 
   const mainImage = getMainImage(images);
   return (
     <article
-      className="bg-white shadow-md rounded-md cursor-pointer"
+      className={`relative bg-white shadow-md rounded-md cursor-pointer
+         ${isFeatured ? "border-2 border-[#1D9E75]" : ""}`}
       onClick={() => navigate(`/listings/${id}`)}
     >
+      {isFeatured && (
+        <div
+          className={`absolute top-3 left-3 flex items-center
+           gap-1 bg-[#0F6E56] text-white p-1 rounded-md`}
+        >
+          <Star size={15} />
+          <p className="text-sm font-bold tracking-wide">Promowane</p>
+        </div>
+      )}
       <img
         src={mainImage}
         alt={title}
