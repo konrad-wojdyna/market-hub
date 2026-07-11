@@ -16,5 +16,6 @@ public record ListingResponse(
         String location,
         LocalDateTime createdAt,
         Long ownerId,
-        List<ListingImageResponse> images
+        List<ListingImageResponse> images,
+        boolean isFeatured
 ) {}

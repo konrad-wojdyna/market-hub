@@ -8,9 +8,15 @@ import com.markethub.api.listing.infrastructure.controller.dto.request.UpdateLis
 import com.markethub.api.listing.infrastructure.controller.dto.response.ListingResponse;
 import com.markethub.api.mapper.ListingImageMapper;
 
+import java.time.LocalDateTime;
+
 public class ListingMapper {
 
     public static ListingResponse toResponse(Listing listing){
+
+        boolean isFeatured = listing.getFeaturedUntil() != null
+                && listing.getFeaturedUntil().isAfter(LocalDateTime.now());
+
         return new ListingResponse(
                 listing.getId(),
                 listing.getTitle(),
@@ -23,7 +29,8 @@ public class ListingMapper {
                 listing.getUser().getId(),
                 listing.getImages().stream()
                         .map(ListingImageMapper::toResponse)
-                        .toList()
+                        .toList(),
+                isFeatured
         );
     }
 
