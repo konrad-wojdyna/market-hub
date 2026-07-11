@@ -55,6 +55,7 @@ public class Listing {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ListingImage> images = new ArrayList<>();
 }
