@@ -8,6 +8,7 @@ import {
 import { useCategories } from "../../hooks/useCategories";
 import { Loading, ErrorComponent } from "../../components";
 import type { ListingSearchParams } from "../../types/listing";
+import { fa } from "zod/v4/locales";
 
 type InputFilterProps = {
   labelText: string;
@@ -95,7 +96,15 @@ const SearchFilters = ({ onSearch, initialParams }: SearchFiltersProps) => {
   });
 
   const onSubmit: SubmitHandler<ListingSearchParams> = (data) => {
-    onSearch(data);
+    const cleaned = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => {
+        if (value === undefined || value === null || value === "") return false;
+        if (typeof value === "number" && Number.isNaN(value)) return false;
+        return true;
+      }),
+    );
+
+    onSearch(cleaned);
   };
 
   if (isLoading) {

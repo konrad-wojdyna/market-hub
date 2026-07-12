@@ -1,9 +1,14 @@
 package com.markethub.api.listing.infrastructure.persistence;
 
 import com.markethub.api.listing.domain.Listing;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class ListingSpecification {
 
@@ -35,5 +40,13 @@ public class ListingSpecification {
     public static Specification<Listing> hasOwnerId(Long ownerId){
         return (root, query, cb) -> ownerId == null ?
                 cb.conjunction() : cb.equal(root.get("user").get("id"), ownerId);
+    }
+
+    public static Order featuredFirst(Root<Listing> root, CriteriaBuilder cb){
+        Expression<Integer> featuredScore = cb.<Integer>selectCase()
+                .when(cb.greaterThan(root.get("featuredUntil"), LocalDateTime.now()), 1)
+                .otherwise(0);
+
+        return cb.desc(featuredScore);
     }
 }

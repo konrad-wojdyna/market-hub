@@ -3,12 +3,17 @@ package com.markethub.api.listing.infrastructure.persistence;
 import com.markethub.api.listing.application.ListingSearchParams;
 import com.markethub.api.listing.application.ports.ListingPort;
 import com.markethub.api.listing.domain.Listing;
+import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -32,7 +37,29 @@ public class ListingAdapter implements ListingPort {
                 .and(ListingSpecification.hasCategory(params.categoryId()))
                 .and(ListingSpecification.hasOwnerId(params.ownerId()));
 
-        return jpaListingRepository.findAll(spec, pageable);
+        Specification<Listing> specWithSort = spec.and((root, query, cb) -> {
+            List<Order> orders = new ArrayList<>();
+
+            orders.add(ListingSpecification.featuredFirst(root, cb));
+
+            for(Sort.Order o : pageable.getSort()){
+                orders.add(o.isAscending()
+                ? cb.asc(root.get(o.getProperty()))
+                : cb.desc(root.get(o.getProperty())));
+            }
+
+            if (query != null) {
+                query.orderBy(orders);
+            }
+            return cb.conjunction();
+        });
+
+        Pageable pageableNoSort = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
+
+        return jpaListingRepository.findAll(specWithSort, pageableNoSort);
     }
 
     @Override
