@@ -44,14 +44,14 @@ const DetailListingPage = () => {
       {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 py-4 flex gap-2 text-sm">
         <Link
-          to="/listings"
+          to="/"
           className="text-gray-400 hover:text-teal-600 transition-colors"
         >
           Listings
         </Link>
         <span className="text-gray-300">/</span>
         <Link
-          to="/listings"
+          to="/"
           className="text-gray-400 hover:text-teal-600 transition-colors"
         >
           {data?.category}
