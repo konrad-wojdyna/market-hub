@@ -17,5 +17,6 @@ public record ListingResponse(
         LocalDateTime createdAt,
         Long ownerId,
         List<ListingImageResponse> images,
-        boolean isFeatured
+        boolean isFeatured,
+        boolean isFavorite
 ) {}

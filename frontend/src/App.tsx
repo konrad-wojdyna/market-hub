@@ -14,6 +14,7 @@ import {
   AdminRoute,
   MyListingsPage,
   UserProfilePage,
+  FavoritesPage,
 } from "./pages";
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/admin" element={<AdminPage />} />
         </Route>
         <Route element={<ProtectedRoute />}>
+          <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/listings/new" element={<CreateListingPage />} />
           <Route path="/listings/my-listings" element={<MyListingsPage />} />
           <Route path="/listings/:id" element={<DetailListingPage />} />

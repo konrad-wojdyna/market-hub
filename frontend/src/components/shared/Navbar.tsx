@@ -12,9 +12,12 @@ const Navbar = () => {
       {isAuthenticated ? (
         <>
           <div className="flex items-center gap-2">
-            <ul>
+            <ul className="flex items-center gap-2">
               <li>
-                <Link to="/listings">MyListings</Link>
+                <Link to="/listings/my-listings">MyListings</Link>
+              </li>
+              <li>
+                <Link to="/favorites">Ulubione</Link>
               </li>
             </ul>
             <div>

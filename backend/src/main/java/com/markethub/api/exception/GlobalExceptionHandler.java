@@ -62,6 +62,14 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Payment processing failed", request);
     }
 
+    @ExceptionHandler(SelfActionNotAllowedException.class)
+    public ResponseEntity<ErrorResponse> handleSelfActionNotAllowed(
+            SelfActionNotAllowedException ex,
+            HttpServletRequest request
+    ){
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCredentials(
             InvalidCredentialsException ex,

@@ -9,13 +9,20 @@ import com.markethub.api.listing.infrastructure.controller.dto.response.ListingR
 import com.markethub.api.mapper.ListingImageMapper;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class ListingMapper {
 
     public static ListingResponse toResponse(Listing listing){
+        return  toResponse(listing, Set.of());
+    }
+
+    public static ListingResponse toResponse(Listing listing, Set<Long> favoritedIds){
 
         boolean isFeatured = listing.getFeaturedUntil() != null
                 && listing.getFeaturedUntil().isAfter(LocalDateTime.now());
+
+        boolean isFavorite = favoritedIds.contains(listing.getId());
 
         return new ListingResponse(
                 listing.getId(),
@@ -30,7 +37,8 @@ public class ListingMapper {
                 listing.getImages().stream()
                         .map(ListingImageMapper::toResponse)
                         .toList(),
-                isFeatured
+                isFeatured,
+                isFavorite
         );
     }
 
