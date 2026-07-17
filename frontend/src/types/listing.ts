@@ -12,6 +12,7 @@ export interface Listing {
   ownerId: number;
   images: ListingImage[];
   isFeatured: boolean;
+  isFavorite: boolean;
 }
 
 export interface ListingSearchParams {

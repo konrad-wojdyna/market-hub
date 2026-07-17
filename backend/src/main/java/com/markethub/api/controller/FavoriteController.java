@@ -28,15 +28,6 @@ public class FavoriteController {
         return ResponseEntity.ok(favorites);
     }
 
-    @GetMapping("/listings/{listingId}")
-    public ResponseEntity<Boolean> getFavoriteItem(
-            @PathVariable Long listingId,
-            @AuthenticationPrincipal UserPrincipal userPrincipal
-    ){
-        boolean isFavorite = favoriteService.isFavorite(listingId, userPrincipal.id());
-        return ResponseEntity.ok(isFavorite);
-    }
-
     @PostMapping
     public ResponseEntity<FavoriteResponse> addFavorite(
             @RequestBody AddFavoriteRequest request,

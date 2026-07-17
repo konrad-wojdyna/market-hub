@@ -14,12 +14,15 @@ import com.markethub.api.exception.UserNotFoundException;
 import com.markethub.api.listing.infrastructure.mapper.ListingMapper;
 import com.markethub.api.repository.CategoryRepository;
 import com.markethub.api.repository.UserRepository;
+import com.markethub.api.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class ListingService {
 
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final FavoriteService favoriteService;
 
     @Transactional
     public ListingResponse createListing(
@@ -54,19 +58,24 @@ public class ListingService {
     @Transactional(readOnly = true)
     public Page<ListingResponse> getAllListing(
             ListingSearchParams params,
-            Pageable pageable
+            Pageable pageable,
+            Long currentUserId
     ){
+
+        Set<Long> favoritedIds = favoriteService.getFavoriteListingIds(currentUserId);
+
        return listingPort.findAll(params, pageable).map(
-               ListingMapper::toResponse
+               listing -> ListingMapper.toResponse(listing, favoritedIds)
        );
     }
 
     @Transactional(readOnly = true)
-    public ListingResponse getListingById(Long id){
+    public ListingResponse getListingById(Long id, Long currentUserId){
 
         Listing listing = findListingById(id);
+        Set<Long> favoritedIds = favoriteService.getFavoriteListingIds(currentUserId);
 
-        return ListingMapper.toResponse(listing);
+        return ListingMapper.toResponse(listing, favoritedIds);
     }
 
     @Transactional

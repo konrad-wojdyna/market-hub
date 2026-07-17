@@ -29,15 +29,19 @@ public class ListingController {
     public ResponseEntity<Page<ListingResponse>> getAllListings(
             @Valid @ModelAttribute ListingSearchParams params,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
-            Pageable pageable
+            Pageable pageable,
+            @AuthenticationPrincipal UserPrincipal currentUser
             ){
-        Page<ListingResponse> response = listingService.getAllListing(params, pageable);
+        Long currentUserId = currentUser != null ? currentUser.id() : null;
+        Page<ListingResponse> response = listingService.getAllListing(params, pageable, currentUserId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ListingResponse> getListingById(@PathVariable Long id){
-        ListingResponse response = listingService.getListingById(id);
+    public ResponseEntity<ListingResponse> getListingById(@PathVariable Long id,
+                                                          @AuthenticationPrincipal UserPrincipal currentUser){
+        Long currentUserId = currentUser != null ? currentUser.id() : null;
+        ListingResponse response = listingService.getListingById(id, currentUserId);
         return ResponseEntity.ok(response);
     }
 
