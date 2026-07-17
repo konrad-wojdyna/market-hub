@@ -1,11 +1,14 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { DeleteModal, Navbar, ImageGallery } from "../../components";
-import { MapPin, TimerIcon } from "lucide-react";
+import { MapPin, TimerIcon, Heart } from "lucide-react";
 import { useState } from "react";
 import { useDeleteListing } from "../../hooks/useDeleteListing";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useListingDetail } from "../../hooks/useListingDetail";
 import { useListingImages } from "../../hooks/useListingImages";
+import { useAddFavorite } from "../../hooks/useAddFavorite";
+import { useRemoveFavorite } from "../../hooks/useRemoveFavorite";
+import { formatDate } from "../../utils/formatDate";
 
 const DetailListingPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -24,6 +27,19 @@ const DetailListingPage = () => {
 
   const { handleDelete } = useDeleteListing();
 
+  const { addFavorite } = useAddFavorite();
+  const { removeFavorite } = useRemoveFavorite();
+
+  const handleToggleFavorite = () => {
+    if (!data) return;
+
+    if (data.isFavorite) {
+      removeFavorite(data.id);
+      return;
+    }
+    addFavorite(data.id);
+  };
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -41,7 +57,6 @@ const DetailListingPage = () => {
     <section className="min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 py-4 flex gap-2 text-sm">
         <Link
           to="/"
@@ -103,7 +118,7 @@ const DetailListingPage = () => {
               {/* Meta */}
               <div className="flex flex-col gap-3 p-4 rounded-xl bg-gray-50 border border-gray-100">
                 <div className="flex items-center gap-3">
-                  <MapPin size={18} className="text-gray-400 flex-shrink-0" />
+                  <MapPin size={18} className="text-gray-400 shrink-0" />
                   <div>
                     <p className="text-xs text-gray-400">Location</p>
                     <p className="text-sm font-medium text-gray-700">
@@ -112,20 +127,16 @@ const DetailListingPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <TimerIcon
-                    size={18}
-                    className="text-gray-400 flex-shrink-0"
-                  />
+                  <TimerIcon size={18} className="text-gray-400 shrink-0" />
                   <div>
                     <p className="text-xs text-gray-400">Posted</p>
                     <p className="text-sm font-medium text-gray-700">
-                      {data?.createdAt}
+                      {formatDate(data?.createdAt ?? "")}
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Owner actions */}
               {user?.id === data?.ownerId && (
                 <div className="flex gap-3 mt-auto pt-4 border-t border-gray-100">
                   <Link
@@ -147,23 +158,38 @@ const DetailListingPage = () => {
                 </div>
               )}
               {user && user?.id !== data?.ownerId && (
-                <div className="mt-auto pt-4 border-t border-gray-100">
+                <div className="mt-auto pt-4 border-t border-gray-100 flex gap-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      if (!user) {
-                        navigate("/login");
-                        return;
-                      }
-
+                    onClick={() =>
                       navigate(
                         `/messages?listingId=${data?.id}&sellerId=${data?.ownerId}`,
-                      );
-                    }}
-                    className="w-full px-4 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700
-        text-white font-medium transition-colors cursor-pointer text-sm"
+                      )
+                    }
+                    className="flex-1 px-4 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700
+                 text-white font-medium transition-colors cursor-pointer text-sm"
                   >
                     Napisz do sprzedającego
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleToggleFavorite}
+                    aria-label={
+                      data?.isFavorite
+                        ? "Usuń z ulubionych"
+                        : "Dodaj do ulubionych"
+                    }
+                    className="px-4 rounded-lg border border-gray-200 hover:bg-gray-50
+                 transition-colors cursor-pointer"
+                  >
+                    <Heart
+                      size={20}
+                      className={
+                        data?.isFavorite
+                          ? "fill-red-500 text-red-500"
+                          : "fill-transparent text-gray-400"
+                      }
+                    />
                   </button>
                 </div>
               )}
@@ -189,7 +215,7 @@ const DetailListingPage = () => {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={async () => {
           await handleDelete(Number(id));
-          navigate("/listings");
+          navigate("/");
         }}
         title={data?.title ?? ""}
       />
